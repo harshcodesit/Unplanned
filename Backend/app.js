@@ -5,6 +5,10 @@ const cors = require('cors');
 const connectDB = require('./config/db.js');
 const userRoutes = require('./routes/userRoute.js');
 
+require("./models/user.js");
+require("./models/vibe.js");
+require("./models/request.js");
+
 
 
 const app = express();
@@ -13,6 +17,8 @@ connectDB();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+
 app.use(cookieParser());
 const corsOptions = {
     origin: 'http://localhost:5173', // Replace with your frontend URL

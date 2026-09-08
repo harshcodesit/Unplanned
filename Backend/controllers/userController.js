@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const registerUser = async (req, res) => {
-  const { name, username, email, password } = req.body;
+  const { name, username, email, password } = req.body || {};
   let errors = [];
   const lowercasedUsername = username.toLowerCase();
   const lowercasedEmail = email.toLowerCase();
@@ -103,7 +103,8 @@ const registerUser = async (req, res) => {
 
 const loginUser = async (req, res) => {
   // Destructure email as well, since users can log in with either
-  const { email, username, password } = req.body;
+  console.log("Login request body:", req.body);
+  const { email, username, password } = req.body || {};
   let errors = [];
 
   if ((!email && !username) || !password) {
@@ -206,7 +207,7 @@ const updateProfile = async (req, res) => {
         return res.status(400).json({ errors });
     }
 
-    const { name, username, email } = req.body;
+    const { name, username, email } = req.body || {};
     const avatarUrl = req.file ? req.file.path : undefined; 
 
     const lowercasedUsername = username ? username.toLowerCase() : '';
@@ -288,7 +289,7 @@ const updateProfile = async (req, res) => {
 
 const changePassword = async (req, res) => {
     
-    const { currentPassword, newPassword, newPassword2 } = req.body;
+    const { currentPassword, newPassword, newPassword2 } = req.body || {};
     let errors = [];
 
     if (!currentPassword || !newPassword || !newPassword2) { 
