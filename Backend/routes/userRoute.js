@@ -2,7 +2,8 @@ const express = require("express");
 const verifyToken = require("../middlewares/jwt.js");
 const multer = require("multer");
 const uploadNone = multer().none();
-const {handleOptionalUpload} = require("../middlewares/uploads.js");
+const { handleOptionalAvatar } = require("../middlewares/uploads.js");
+
 const {
   registerUser,
   loginUser,
@@ -15,9 +16,9 @@ const {
 const router = express.Router();
 router.get("/profile", verifyToken, getAuraProfile);
 router.post("/login", uploadNone, loginUser);
-router.post("/register", handleOptionalUpload, registerUser);
+router.post("/register", handleOptionalAvatar, registerUser);
 router.post("/logout", logoutUser);
-router.put("/update-profile", verifyToken, handleOptionalUpload, updateProfile);
+router.put("/update-profile", verifyToken, handleOptionalAvatar, updateProfile);
 router.put("/change-password", verifyToken, uploadNone, changePassword);
 
 module.exports = router;
