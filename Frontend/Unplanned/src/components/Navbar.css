@@ -44,7 +44,7 @@
 }
 
 .navlogo{
-    color: #F5DEB3;
+    color: #F0EDE4;
     font-weight: 900;
     font-style: normal;
     font-size: xx-large;
@@ -65,7 +65,7 @@
 .btn {
  width: 4em;
  height: 1.3em;
- background: #F5DEB3;
+ background: #F0EDE4;
  color: #004741;
  border: none;
  border-radius: 0.510em;
@@ -78,7 +78,7 @@
 }
 
 button:hover {
- color: #F5DEB3;
+ color: #F0EDE4;
 }
 
 button:after {
