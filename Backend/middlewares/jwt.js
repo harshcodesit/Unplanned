@@ -25,4 +25,23 @@ const verifyToken = (req, res, next) => {
   }
 };
 
+const optionalVerifyToken = (req, res, next) => {
+  const token =
+    req.cookies?.token ||
+    (req.headers.authorization && req.headers.authorization.split(" ")[1]);
+
+  if (token) {
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      req.user = decoded;
+    } catch (err) {
+      // Continue as guest if token is invalid or expired
+    }
+  }
+  next();
+};
+
+verifyToken.verifyToken = verifyToken;
+verifyToken.optionalVerifyToken = optionalVerifyToken;
+
 module.exports = verifyToken;

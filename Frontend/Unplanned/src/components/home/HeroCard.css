@@ -1,0 +1,485 @@
+/* ==========================================================================
+   HeroCard.css - Architectural Reference Implementation
+   Features: Concave inverted corner cutouts, notched beacon capsule, amber CTA
+   Palette: Forest Pine (#004741), Golden Amber (#E5A93C), Cream (#F0EDE4)
+   ========================================================================== */
+
+.hero-card-wrapper {
+  width: 100%;
+  max-width: 1120px;
+  margin: 1.5rem auto 3rem auto;
+  padding: 0 1rem;
+  box-sizing: border-box;
+}
+
+/* Outer frame representing the deeper foundation */
+.hero-card-frame {
+  background: linear-gradient(180deg, #003631 0%, #002925 100%);
+  border-radius: 28px;
+  padding: 10px;
+  box-shadow: 0 20px 50px rgba(0, 41, 37, 0.35);
+  position: relative;
+  overflow: visible;
+}
+
+/* Main inner canvas with tactile Pine Gradient */
+.hero-card-canvas {
+  background: radial-gradient(circle at 50% 0%, #0a635b 0%, #004741 65%, #003a35 100%);
+  border-radius: 20px;
+  position: relative;
+  min-height: 380px;
+  padding: 3rem 3.5rem 4.5rem 3.5rem;
+  color: var(--color-cream);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* Background Ambient Compass Rings */
+.hero-card-canvas::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 440px;
+  height: 440px;
+  border: 1px dashed rgba(240, 237, 228, 0.12);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.hero-card-canvas::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 280px;
+  height: 280px;
+  border: 1px solid rgba(240, 237, 228, 0.08);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* Left Content Column */
+.hero-left-content {
+  max-width: 520px;
+  z-index: 2;
+}
+
+.hero-kicker {
+  color: #E5A93C;
+  font-size: 1.4rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+  display: block;
+}
+
+.hero-headline {
+  font-size: 2.75rem;
+  font-weight: 850;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: #FFFFFF;
+  margin: 0 0 1rem 0;
+}
+
+.hero-description {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: rgba(240, 237, 228, 0.9);
+  margin: 0;
+  max-width: 460px;
+}
+
+/* --------------------------------------------------------------------------
+   Hero Beacon Card - Right Column (Notched Vibe Capsule)
+   Strictly adheres to backend schema: title, desc, location, date, participants, host
+   -------------------------------------------------------------------------- */
+.hero-beacon-card {
+  background: rgba(0, 32, 28, 0.82);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(240, 237, 228, 0.22);
+  border-radius: 20px;
+  width: 310px;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Notched Top Header with Negative Radius Scoop */
+.beacon-notch-header {
+  background-color: rgba(0, 52, 46, 0.9);
+  padding: 10px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(240, 237, 228, 0.14);
+}
+
+.beacon-live-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.76rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #34D399;
+}
+
+.beacon-pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #10B981;
+  box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  animation: beaconPulse 2s infinite;
+}
+
+@keyframes beaconPulse {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 8px rgba(16, 185, 129, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
+}
+
+.beacon-status-tag {
+  font-size: 0.72rem;
+  font-weight: 850;
+  padding: 3px 9px;
+  border-radius: 9999px;
+  background-color: rgba(229, 169, 60, 0.2);
+  color: #E5A93C;
+  border: 1px solid rgba(229, 169, 60, 0.35);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.beacon-card-body {
+  padding: 1.25rem 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.beacon-title {
+  font-size: 1.18rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.beacon-desc {
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: rgba(240, 237, 228, 0.85);
+  margin: 0;
+}
+
+.beacon-meta-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  padding: 0.75rem 0;
+  border-top: 1px solid rgba(240, 237, 228, 0.12);
+  border-bottom: 1px solid rgba(240, 237, 228, 0.12);
+  font-size: 0.82rem;
+  color: #CBD5E1;
+}
+
+.beacon-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.beacon-icon {
+  color: #E5A93C;
+  flex-shrink: 0;
+}
+
+.beacon-host-footer {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.beacon-host-img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1.5px solid #E5A93C;
+}
+
+.beacon-host-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.beacon-host-sub {
+  font-size: 0.7rem;
+  color: rgba(240, 237, 228, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.beacon-host-username {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--color-cream);
+}
+
+/* --------------------------------------------------------------------------
+   Negative Radius Bottom Cutouts (The Signature Reference Feature)
+   -------------------------------------------------------------------------- */
+.hero-bottom-cutouts {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  pointer-events: none;
+  z-index: 4;
+}
+
+/* Bottom Left Cutout Anchor */
+.cutout-left-anchor {
+  position: relative;
+  background-color: #002925;
+  padding: 10px 24px 10px 14px;
+  border-top-right-radius: 28px;
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+}
+
+/* Concave corner scoops for left cutout */
+.cutout-left-anchor::before {
+  content: "";
+  position: absolute;
+  top: -24px;
+  left: 0;
+  width: 24px;
+  height: 24px;
+  background: transparent;
+  border-bottom-left-radius: 24px;
+  box-shadow: -6px 6px 0 6px #002925;
+  pointer-events: none;
+}
+
+.cutout-left-anchor::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: -24px;
+  width: 24px;
+  height: 24px;
+  background: transparent;
+  border-bottom-left-radius: 24px;
+  box-shadow: -6px 6px 0 6px #002925;
+  pointer-events: none;
+}
+
+/* Golden Amber Pill CTA (Matching [ -> Shop Now ]) */
+.hero-cta-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  background-color: #E5A93C;
+  color: #1a1708;
+  font-weight: 800;
+  font-size: 1.05rem;
+  padding: 8px 22px 8px 10px;
+  border-radius: 9999px;
+  text-decoration: none;
+  box-shadow: 0 4px 16px rgba(229, 169, 60, 0.4);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease;
+}
+
+.hero-cta-pill:hover {
+  transform: translateY(-2px) scale(1.02);
+  background-color: #f0b54e;
+}
+
+.hero-cta-pill:active {
+  transform: scale(0.98);
+}
+
+.cta-icon-circle {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background-color: #FFFFFF;
+  color: #1a1708;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* Bottom Right Cutout Anchor */
+.cutout-right-anchor {
+  position: relative;
+  background-color: #002925;
+  padding: 10px 14px 10px 24px;
+  border-top-left-radius: 28px;
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* Concave corner scoops for right cutout */
+.cutout-right-anchor::before {
+  content: "";
+  position: absolute;
+  top: -24px;
+  right: 0;
+  width: 24px;
+  height: 24px;
+  background: transparent;
+  border-bottom-right-radius: 24px;
+  box-shadow: 6px 6px 0 6px #002925;
+  pointer-events: none;
+}
+
+.cutout-right-anchor::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: -24px;
+  width: 24px;
+  height: 24px;
+  background: transparent;
+  border-bottom-right-radius: 24px;
+  box-shadow: 6px 6px 0 6px #002925;
+  pointer-events: none;
+}
+
+/* Circular Amber Action Buttons */
+.hero-circle-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: #E5A93C;
+  color: #1a1708;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(229, 169, 60, 0.35);
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.hero-circle-btn:hover {
+  transform: scale(1.08);
+  background-color: #f0b54e;
+}
+
+.hero-circle-btn:active {
+  transform: scale(0.95);
+}
+
+/* --------------------------------------------------------------------------
+   Responsive Layout Clamping
+   -------------------------------------------------------------------------- */
+@media (max-width: 992px) {
+  .hero-card-canvas {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 2.5rem 2rem 5rem 2rem;
+  }
+
+  .hero-headline {
+    font-size: 2.25rem;
+  }
+
+  .hero-beacon-card {
+    align-self: center;
+    width: 100%;
+    max-width: 340px;
+    margin-top: 1.5rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-card-wrapper {
+    margin: 1rem auto 2rem auto;
+    padding: 0 0.75rem;
+  }
+
+  .hero-card-canvas {
+    padding: 1.75rem 1.25rem 5.5rem 1.25rem;
+    border-radius: 16px;
+    min-height: auto;
+  }
+
+  .hero-kicker {
+    font-size: 1.1rem;
+  }
+
+  .hero-headline {
+    font-size: 1.85rem;
+  }
+
+  .hero-description {
+    font-size: 0.95rem;
+  }
+
+  .hero-bottom-cutouts {
+    position: static;
+    margin-top: 1.5rem;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  .cutout-left-anchor,
+  .cutout-right-anchor {
+    background-color: transparent;
+    padding: 0;
+    border-radius: 0;
+  }
+
+  .cutout-left-anchor::before,
+  .cutout-left-anchor::after,
+  .cutout-right-anchor::before,
+  .cutout-right-anchor::after {
+    display: none;
+  }
+
+  .hero-cta-pill {
+    width: 100%;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+
+  .cutout-right-anchor {
+    justify-content: center;
+  }
+}

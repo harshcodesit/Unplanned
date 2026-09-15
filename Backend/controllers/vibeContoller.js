@@ -1,5 +1,6 @@
 const Vibe = require("../models/vibe.js");
 const User = require("../models/user.js");
+const Request = require("../models/request.js");
 
 function getBlurredCoordinates(longitude, latitude, radiusKm = 1) {
   const R = 6371; // Earth's radius in kilometers
@@ -288,6 +289,7 @@ const deleteVibe = async (req, res) => {
     
     await User.findByIdAndUpdate(userId, { $pull: { hostedVibes: id } });
     await User.updateMany({ joinedVibes: id }, { $pull: { joinedVibes: id } });
+    await Request.deleteMany({ vibe: id });
 
     await Vibe.findByIdAndDelete(id);
 

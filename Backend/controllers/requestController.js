@@ -12,6 +12,12 @@ const sendJoinRequest = async (req, res) => {
       return res.status(404).json({ errors: [{ msg: "Vibe not found." }] });
     }
 
+    if (vibe.status !== "Open") {
+      return res.status(400).json({
+        errors: [{ msg: `Cannot join a vibe that is ${vibe.status.toLowerCase()}.` }],
+      });
+    }
+
     if (vibe.creator.equals(requesterId)) {
       return res.status(400).json({
         errors: [{ msg: "You cannot send a join request to your own Vibe." }],
@@ -131,6 +137,12 @@ const acceptJoinRequest = async (req, res) => {
     if (request.status !== "pending") {
       return res.status(400).json({
         errors: [{ msg: `This request is already '${request.status}'.` }],
+      });
+    }
+
+    if (vibe.status !== "Open") {
+      return res.status(400).json({
+        errors: [{ msg: `Cannot accept requests for a vibe that is ${vibe.status.toLowerCase()}.` }],
       });
     }
 

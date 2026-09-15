@@ -1,0 +1,198 @@
+/* ==========================================================================
+   ToastContainer.css - Global Toast Notification System
+   Design Identity: Forest Pine, Amber, Emerald, Terracotta
+   Typography: Outfit (Titles) & Plus Jakarta Sans (Messages)
+   ========================================================================== */
+
+.toast-container {
+  position: fixed;
+  top: 76px;
+  right: 22px;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 420px;
+  width: calc(100vw - 44px);
+  pointer-events: none;
+}
+
+/* --------------------------------------------------------------------------
+   Individual Toast Card
+   -------------------------------------------------------------------------- */
+.toast-item {
+  pointer-events: auto;
+  position: relative;
+  background-color: #FFFFFF;
+  border-radius: 18px;
+  border: 1.5px solid rgba(0, 71, 65, 0.16);
+  box-shadow: 0 16px 40px rgba(0, 32, 28, 0.22);
+  overflow: hidden;
+  display: flex;
+  align-items: flex-start;
+  padding: 14px 16px;
+  gap: 12px;
+  box-sizing: border-box;
+  animation: toastEntrance 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+@keyframes toastEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(-16px) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Variant Left Accent Spines */
+.toast-item.success {
+  border-left: 5px solid #10B981;
+}
+
+.toast-item.error {
+  border-left: 5px solid #EF4444;
+}
+
+.toast-item.warning {
+  border-left: 5px solid #E5A93C;
+}
+
+.toast-item.info {
+  border-left: 5px solid var(--color-pine);
+}
+
+/* Icon Orb Badge */
+.toast-icon-box {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.toast-item.success .toast-icon-box {
+  background-color: rgba(16, 185, 129, 0.15);
+  color: #065F46;
+}
+
+.toast-item.error .toast-icon-box {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: #991B1B;
+}
+
+.toast-item.warning .toast-icon-box {
+  background-color: rgba(229, 169, 60, 0.2);
+  color: #92400E;
+}
+
+.toast-item.info .toast-icon-box {
+  background-color: rgba(0, 71, 65, 0.12);
+  color: var(--color-pine);
+}
+
+/* Content Area */
+.toast-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-right: 6px;
+}
+
+.toast-title {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--color-charcoal);
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.toast-message {
+  font-family: var(--font-sans);
+  font-size: 0.86rem;
+  line-height: 1.45;
+  color: #4B5563;
+  margin: 0;
+  white-space: pre-line;
+}
+
+/* Dismiss Close Button */
+.toast-dismiss-btn {
+  background: transparent;
+  border: none;
+  color: #9CA3AF;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.toast-dismiss-btn:hover {
+  color: var(--color-charcoal);
+  background-color: rgba(0, 71, 65, 0.06);
+}
+
+/* Auto-Dismiss Progress Bar */
+.toast-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  background-color: currentColor;
+  opacity: 0.35;
+  animation: toastProgress linear forwards;
+}
+
+.toast-item.success .toast-progress {
+  color: #10B981;
+}
+
+.toast-item.error .toast-progress {
+  color: #EF4444;
+}
+
+.toast-item.warning .toast-progress {
+  color: #E5A93C;
+}
+
+.toast-item.info .toast-progress {
+  color: var(--color-pine);
+}
+
+@keyframes toastProgress {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Mobile Constraints
+   -------------------------------------------------------------------------- */
+@media (max-width: 480px) {
+  .toast-container {
+    top: 66px;
+    right: 12px;
+    left: 12px;
+    width: auto;
+    max-width: none;
+  }
+
+  .toast-item {
+    padding: 12px 14px;
+    border-radius: 16px;
+  }
+}

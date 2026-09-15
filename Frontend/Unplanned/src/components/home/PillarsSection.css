@@ -1,0 +1,257 @@
+/* ==========================================================================
+   PillarsSection.css - The Spontaneous Mindset
+   Design Identity: Architectural Notched Permit Silhouette, Inverted Scoops
+   ========================================================================== */
+
+.pillars-wrapper {
+  width: 100%;
+  max-width: 1120px;
+  margin: 3.5rem auto 4.5rem auto;
+  padding: 0 1rem;
+  box-sizing: border-box;
+}
+
+.pillars-header {
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto 3.25rem auto;
+}
+
+.pillars-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--color-pine);
+  font-size: 0.82rem;
+  font-weight: 850;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  padding: 4px 14px;
+  border-radius: 9999px;
+  background-color: rgba(0, 71, 65, 0.08);
+  border: 1px solid rgba(0, 71, 65, 0.16);
+  margin-bottom: 0.75rem;
+}
+
+.pillars-title {
+  font-size: 2.35rem;
+  font-weight: 850;
+  color: var(--color-charcoal);
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+  margin: 0 0 0.75rem 0;
+}
+
+.pillars-lead {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: #4B5563;
+  margin: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Connected 3-Step Protocol Grid with Custom Notched Silhouettes
+   -------------------------------------------------------------------------- */
+.protocol-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  position: relative;
+}
+
+/* Permit / Voucher Silhouette Card with Left & Right Cutout Notches */
+.protocol-card {
+  background-color: #FFFFFF;
+  border: 1.5px solid rgba(0, 71, 65, 0.14);
+  border-radius: 26px;
+  padding: 0 0 1.75rem 0;
+  box-shadow: 0 8px 24px rgba(0, 71, 65, 0.06);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: transform 0.25s var(--ease-spring), box-shadow 0.25s ease, border-color 0.2s ease;
+  overflow: visible;
+}
+
+.protocol-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 38px rgba(0, 71, 65, 0.12);
+  border-color: rgba(0, 71, 65, 0.32);
+}
+
+/* Ticket-Style Semicircle Cutout Notches on Left & Right Edges (Seamless Arch Geometry) */
+.protocol-card-notch-left,
+.protocol-card-notch-right {
+  position: absolute;
+  top: 56%;
+  width: 12px;
+  height: 24px;
+  background-color: var(--color-cream);
+  background-clip: padding-box;
+  z-index: 3;
+  pointer-events: none;
+  box-sizing: border-box;
+}
+
+.protocol-card-notch-left {
+  left: -1.5px;
+  border-top: 1.5px solid rgba(0, 71, 65, 0.14);
+  border-right: 1.5px solid rgba(0, 71, 65, 0.14);
+  border-bottom: 1.5px solid rgba(0, 71, 65, 0.14);
+  border-left: none;
+  border-radius: 0 12px 12px 0;
+}
+
+.protocol-card-notch-right {
+  right: -1.5px;
+  border-top: 1.5px solid rgba(0, 71, 65, 0.14);
+  border-left: 1.5px solid rgba(0, 71, 65, 0.14);
+  border-bottom: 1.5px solid rgba(0, 71, 65, 0.14);
+  border-right: none;
+  border-radius: 12px 0 0 12px;
+}
+
+/* Top Notched Crown Tab with Negative-Radius Inverted Scoop */
+.protocol-notched-header {
+  position: relative;
+  background-color: var(--color-pine);
+  color: var(--color-cream);
+  padding: 12px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top-left-radius: 24px;
+  border-bottom-right-radius: 20px;
+  width: 76%;
+  box-sizing: border-box;
+}
+
+/* Mathematical concave scoop joining the notch to the card top edge */
+.protocol-notched-header::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: -20px;
+  width: 20px;
+  height: 20px;
+  background: transparent;
+  border-top-left-radius: 20px;
+  box-shadow: -6px -6px 0 6px var(--color-pine);
+  pointer-events: none;
+}
+
+.protocol-phase-indicator {
+  display: flex;
+  align-items: baseline;
+  gap: 0.3rem;
+}
+
+.protocol-step-prefix {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: rgba(240, 237, 228, 0.75);
+  letter-spacing: 0.08em;
+}
+
+.protocol-step-num {
+  font-family: monospace;
+  font-size: 1.35rem;
+  font-weight: 900;
+  color: #E5A93C;
+  letter-spacing: -0.02em;
+}
+
+.protocol-badge {
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 3px 8px;
+  border-radius: 9999px;
+  background-color: rgba(240, 237, 228, 0.16);
+  color: var(--color-cream);
+  border: 1px solid rgba(240, 237, 228, 0.2);
+}
+
+/* Card Body Content */
+.protocol-card-body {
+  padding: 1.5rem 1.65rem 0 1.65rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.protocol-icon-orb {
+  width: 50px;
+  height: 50px;
+  border-radius: 14px;
+  background-color: var(--color-cream);
+  color: var(--color-pine);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.25rem;
+  transition: background-color 0.25s ease, color 0.25s ease, transform 0.2s ease;
+}
+
+.protocol-card:hover .protocol-icon-orb {
+  background-color: var(--color-pine);
+  color: #E5A93C;
+  transform: scale(1.05);
+}
+
+.protocol-card-title {
+  font-size: 1.22rem;
+  font-weight: 800;
+  color: var(--color-charcoal);
+  margin: 0 0 0.65rem 0;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+
+.protocol-card-desc {
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: #4B5563;
+  margin: 0 0 1.25rem 0;
+  flex: 1;
+}
+
+/* Perforation Divider Line Connecting the Side Notches */
+.protocol-perforation {
+  width: 100%;
+  height: 1px;
+  border-top: 1.5px dashed rgba(0, 71, 65, 0.16);
+  margin: 0.5rem 0 1rem 0;
+}
+
+/* User-Centric Value Guarantee Tag (Free of Technical Jargon) */
+.protocol-benefit-tag {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 8px 12px;
+  border-radius: 12px;
+  background-color: rgba(0, 71, 65, 0.04);
+  border: 1px solid rgba(0, 71, 65, 0.1);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--color-pine);
+  line-height: 1.4;
+}
+
+.protocol-benefit-icon {
+  color: #E5A93C;
+  flex-shrink: 0;
+}
+
+@media (max-width: 992px) {
+  .protocol-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .pillars-title {
+    font-size: 2rem;
+  }
+}

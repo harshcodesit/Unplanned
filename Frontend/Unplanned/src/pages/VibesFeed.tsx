@@ -1,9 +1,5 @@
-import React from 'react'
-
 const VibesFeed = () => {
-  return (
-    <div>VibesFeed</div>
-  )
-}
+  return <div>VibesFeed</div>;
+};
 
-export default VibesFeed
+export default VibesFeed;
