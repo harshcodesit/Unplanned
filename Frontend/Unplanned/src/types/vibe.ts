@@ -18,7 +18,7 @@ export interface VibeGeometry {
   coordinates: [number, number]; // [longitude, latitude]
 }
 
-export type VibeStatus = "Open" | "Full" | "Completed" | "Cancelled";
+export type VibeStatus = "Open" | "Full" | "Completed" | "Cancelled" | "Closed" | "closed";
 
 export interface Vibe {
   _id: string;

@@ -55,7 +55,7 @@ const VibeSchema = new mongoose.Schema(
     ],
     status: {
       type: String,
-      enum: ["Open", "Full", "Completed", "Cancelled"],
+      enum: ["Open", "Full", "Completed", "Cancelled", "Closed", "closed"],
       default: "Open",
     },
   },

@@ -196,7 +196,7 @@ const VibeCreate: FC = () => {
 
       if (response.data.success) {
         toast.success(
-          response.data.message || "Microadventure broadcasted live! Radar beacon active.",
+          response.data.message || "Microadventure broadcasted live! Radar spark active.",
           "Vibe Created"
         );
         navigate("/vibes", { replace: true });
@@ -258,7 +258,7 @@ const VibeCreate: FC = () => {
             <Radio size={15} className="vibe-create-kicker-icon" />
             <span className="vibe-create-kicker-text">Transmitter Permit</span>
           </div>
-          <span className="vibe-create-step-badge">New Beacon</span>
+          <span className="vibe-create-step-badge">New Spark</span>
         </div>
 
         <div className="vibe-create-body">
@@ -268,7 +268,7 @@ const VibeCreate: FC = () => {
               Broadcast Microadventure
             </h1>
             <p className="vibe-create-subtitle">
-              Drop an open beacon onto the city radar for fellow wanderers to discover. Exact
+              Drop an open spark onto the city radar for fellow wanderers to discover. Exact
               coordinates stay protected in a safe radius until you approve a request.
             </p>
           </div>
@@ -524,11 +524,11 @@ const VibeCreate: FC = () => {
               {isLoading ? (
                 <>
                   <span className="btn-spinner" aria-hidden="true" />
-                  <span>Broadcasting Beacon...</span>
+                  <span>Broadcasting Spark...</span>
                 </>
               ) : (
                 <>
-                  <span>Broadcast Microadventure Live</span>
+                  <span>Broadcast Spark Live</span>
                   <Radio size={18} />
                 </>
               )}

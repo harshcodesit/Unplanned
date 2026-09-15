@@ -1,5 +1,5 @@
 import { useState, type ChangeEvent, type FC, type FormEvent } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import {
   AlertCircle,
   ArrowRight,
@@ -40,10 +40,14 @@ interface AlertState {
   messages: string[];
 }
 
+interface LocationStateWithFrom {
+  from?: string | { pathname?: string; search?: string; hash?: string };
+}
+
 const Login: FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { login } = useAuth();
+  const { user, loading, login } = useAuth();
   const toast = useToast();
 
   // Form input values
@@ -55,8 +59,21 @@ const Login: FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [alert, setAlert] = useState<AlertState | null>(null);
 
-  // Check if there is a target path from a protected route redirect
-  const redirectFrom = (location.state as { from?: { pathname?: string } })?.from?.pathname || "/";
+  // Compute return URL for deep linking after auth
+  const locationState = location.state as LocationStateWithFrom | null;
+  let targetReturnUrl = "/";
+  if (locationState?.from) {
+    if (typeof locationState.from === "string") {
+      targetReturnUrl = locationState.from;
+    } else if (locationState.from.pathname) {
+      targetReturnUrl = `${locationState.from.pathname}${locationState.from.search || ""}${locationState.from.hash || ""}`;
+    }
+  }
+
+  // If already logged in, redirect straight to profile page
+  if (!loading && user) {
+    return <Navigate to="/profile" replace />;
+  }
 
   const handleIdentifierChange = (e: ChangeEvent<HTMLInputElement>) => {
     setIdentifier(e.target.value);
@@ -133,7 +150,7 @@ const Login: FC = () => {
         login(authenticatedUser);
 
         // Immediate redirection: toast stays visible seamlessly on destination page
-        navigate(redirectFrom, { replace: true });
+        navigate(targetReturnUrl, { replace: true });
       }
     } catch (err: unknown) {
       setIsLoading(false);
@@ -338,7 +355,7 @@ const Login: FC = () => {
           {/* Footer Switch to Sign Up */}
           <div className="login-footer-switch">
             <span>Don't have a Wanderer passport yet?</span>
-            <Link to="/register" className="login-switch-link">
+            <Link to="/register" state={location.state} className="login-switch-link">
               Begin Your Journey
             </Link>
           </div>

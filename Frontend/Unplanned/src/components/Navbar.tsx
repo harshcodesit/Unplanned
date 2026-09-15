@@ -1,12 +1,12 @@
 import { useEffect, useState, type FC } from "react";
-import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
-import { Compass, Flame, Footprints, LogOut, User as UserIcon, X } from "lucide-react";
+import { Link, NavLink, useLocation } from "react-router-dom";
+import { Compass, Flame, Footprints, X } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
+import { DEFAULT_AVATAR_URL, getAvatarUrl } from "../types/user";
 import "./Navbar.css";
 
 const Navbar: FC = () => {
-  const { user, logout } = useAuth();
-  const navigate = useNavigate();
+  const { user } = useAuth();
   const location = useLocation();
 
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
@@ -24,11 +24,12 @@ const Navbar: FC = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Close mobile drawer on route change or ESC key
+  // Close mobile drawer on route change
   useEffect(() => {
     setIsMobileOpen(false);
   }, [location.pathname]);
 
+  // Close on ESC key
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape" && isMobileOpen) {
@@ -52,10 +53,11 @@ const Navbar: FC = () => {
     };
   }, [isMobileOpen]);
 
-  const handleLogout = async () => {
-    await logout();
-    setIsMobileOpen(false);
-    navigate("/login");
+  // Smooth scroll to top when already on target tab
+  const handleNavClick = (targetPath: string) => {
+    if (location.pathname === targetPath) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
   };
 
   return (
@@ -66,8 +68,12 @@ const Navbar: FC = () => {
         role="navigation"
       >
         {/* Brand Identity with Amber Spark Accent */}
-        <Link to="/" className="navlogo-link" aria-label="Unplanned Home">
-
+        <Link
+          to="/"
+          className="navlogo-link"
+          aria-label="Unplanned Home"
+          onClick={() => handleNavClick("/")}
+        >
           <span className="navlogo">Unplanned</span>
         </Link>
 
@@ -78,6 +84,7 @@ const Navbar: FC = () => {
             end
             className={({ isActive }) => `nav-btn ${isActive ? "active" : ""}`}
             role="menuitem"
+            onClick={() => handleNavClick("/")}
           >
             <span>Home</span>
           </NavLink>
@@ -86,6 +93,7 @@ const Navbar: FC = () => {
             to="/vibes"
             className={({ isActive }) => `nav-btn ${isActive ? "active" : ""}`}
             role="menuitem"
+            onClick={() => handleNavClick("/vibes")}
           >
             <span>Vibes</span>
           </NavLink>
@@ -94,6 +102,7 @@ const Navbar: FC = () => {
             to="/trail"
             className={({ isActive }) => `nav-btn ${isActive ? "active" : ""}`}
             role="menuitem"
+            onClick={() => handleNavClick("/trail")}
           >
             <span>Trail</span>
           </NavLink>
@@ -106,24 +115,18 @@ const Navbar: FC = () => {
                 className={({ isActive }) => `nav-btn nav-btn-profile ${isActive ? "active" : ""}`}
                 role="menuitem"
                 aria-label={`Profile for @${user.username}`}
+                onClick={() => handleNavClick("/profile")}
               >
-                {user.avatarUrl ? (
-                  <img src={user.avatarUrl} alt="" className="nav-user-avatar" />
-                ) : (
-                  <UserIcon size={14} className="nav-user-icon" />
-                )}
+                <img
+                  src={getAvatarUrl(user.avatarUrl)}
+                  alt=""
+                  className="nav-user-avatar"
+                  onError={(e) => {
+                    e.currentTarget.src = DEFAULT_AVATAR_URL;
+                  }}
+                />
                 <span className="nav-user-name">@{user.username}</span>
               </NavLink>
-
-              <button
-                type="button"
-                onClick={handleLogout}
-                className="nav-btn nav-btn-ghost"
-                aria-label="Log out of account"
-              >
-                <LogOut size={14} />
-                <span>Logout</span>
-              </button>
             </div>
           ) : (
             <div className="nav-auth-slot">
@@ -131,6 +134,7 @@ const Navbar: FC = () => {
                 to="/login"
                 className={({ isActive }) => `nav-btn ${isActive ? "active" : ""}`}
                 role="menuitem"
+                onClick={() => handleNavClick("/login")}
               >
                 <span>Login</span>
               </NavLink>
@@ -139,6 +143,7 @@ const Navbar: FC = () => {
                 to="/register"
                 className={({ isActive }) => `nav-btn nav-btn-cta ${isActive ? "active" : ""}`}
                 role="menuitem"
+                onClick={() => handleNavClick("/register")}
               >
                 <span>Sign Up</span>
               </NavLink>
@@ -190,7 +195,10 @@ const Navbar: FC = () => {
               to="/"
               end
               className={({ isActive }) => `mobile-nav-item ${isActive ? "active" : ""}`}
-              onClick={() => setIsMobileOpen(false)}
+              onClick={() => {
+                handleNavClick("/");
+                setIsMobileOpen(false);
+              }}
             >
               <Compass size={18} className="mobile-item-icon" />
               <span>Home</span>
@@ -199,7 +207,10 @@ const Navbar: FC = () => {
             <NavLink
               to="/vibes"
               className={({ isActive }) => `mobile-nav-item ${isActive ? "active" : ""}`}
-              onClick={() => setIsMobileOpen(false)}
+              onClick={() => {
+                handleNavClick("/vibes");
+                setIsMobileOpen(false);
+              }}
             >
               <Flame size={18} className="mobile-item-icon" />
               <span>Vibes</span>
@@ -208,7 +219,10 @@ const Navbar: FC = () => {
             <NavLink
               to="/trail"
               className={({ isActive }) => `mobile-nav-item ${isActive ? "active" : ""}`}
-              onClick={() => setIsMobileOpen(false)}
+              onClick={() => {
+                handleNavClick("/trail");
+                setIsMobileOpen(false);
+              }}
             >
               <Footprints size={18} className="mobile-item-icon" />
               <span>Trail</span>
@@ -223,31 +237,31 @@ const Navbar: FC = () => {
               <NavLink
                 to="/profile"
                 className={({ isActive }) => `mobile-nav-item ${isActive ? "active" : ""}`}
-                onClick={() => setIsMobileOpen(false)}
+                onClick={() => {
+                  handleNavClick("/profile");
+                  setIsMobileOpen(false);
+                }}
               >
-                {user.avatarUrl ? (
-                  <img src={user.avatarUrl} alt="" className="mobile-user-avatar" />
-                ) : (
-                  <UserIcon size={18} className="mobile-item-icon" />
-                )}
+                <img
+                  src={getAvatarUrl(user.avatarUrl)}
+                  alt=""
+                  className="mobile-user-avatar"
+                  onError={(e) => {
+                    e.currentTarget.src = DEFAULT_AVATAR_URL;
+                  }}
+                />
                 <span>Profile (@{user.username})</span>
               </NavLink>
-
-              <button
-                type="button"
-                onClick={handleLogout}
-                className="mobile-logout-btn"
-              >
-                <LogOut size={16} />
-                <span>Log Out</span>
-              </button>
             </div>
           ) : (
             <div className="mobile-auth-actions">
               <NavLink
                 to="/login"
                 className="mobile-login-btn"
-                onClick={() => setIsMobileOpen(false)}
+                onClick={() => {
+                  handleNavClick("/login");
+                  setIsMobileOpen(false);
+                }}
               >
                 <span>Login</span>
               </NavLink>
@@ -255,7 +269,10 @@ const Navbar: FC = () => {
               <NavLink
                 to="/register"
                 className="mobile-signup-btn"
-                onClick={() => setIsMobileOpen(false)}
+                onClick={() => {
+                  handleNavClick("/register");
+                  setIsMobileOpen(false);
+                }}
               >
                 <span>Sign Up</span>
               </NavLink>

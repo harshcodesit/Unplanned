@@ -51,7 +51,14 @@ const getAllVibes = async (req, res) => {
       .populate("participants", "username name avatarUrl")
       .sort({ createdAt: -1 });
 
+    const now = new Date();
     const vibesForDisplay = vibes.map((vibe) => {
+      // Auto-transition to Closed if past endDate
+      if (vibe.endDate && new Date(vibe.endDate) < now && vibe.status === "Open") {
+        vibe.status = "Closed";
+        vibe.save().catch((e) => console.error("Auto-close error in getAllVibes:", e));
+      }
+
       const currentUserId = req.user?.userId || req.user?._id;
       let displayLocation = {
         latitude: vibe.geometry.coordinates[1],
@@ -180,13 +187,43 @@ const getVibeById = async (req, res) => {
       return res.status(404).json({ errors: [{ msg: "Vibe not found." }] });
     }
 
+    // Automatic expiration: if end time has passed and status is Open, transition to Closed
+    if (vibe.endDate && new Date(vibe.endDate) < new Date() && vibe.status === "Open") {
+      vibe.status = "Closed";
+      await vibe.save();
+    }
+
     let showActualLocation = false;
-    if (
-      currentUserId &&
-      vibe.creator &&
-      vibe.creator._id.equals(currentUserId)
-    ) {
-      showActualLocation = true;
+    let userRequest = null;
+
+    if (currentUserId) {
+      // 1. Is the user the vibe creator / host?
+      const isCreator = Boolean(
+        vibe.creator &&
+          (vibe.creator._id.equals(currentUserId) ||
+            vibe.creator._id.toString() === currentUserId.toString())
+      );
+
+      // 2. Is the user an approved participant in the participants list?
+      const isParticipant = Boolean(
+        vibe.participants &&
+          vibe.participants.some((p) => {
+            const pId = p._id ? p._id.toString() : p.toString();
+            return pId === currentUserId.toString();
+          })
+      );
+
+      // 3. Check user's join request status in Request collection
+      userRequest = await Request.findOne({
+        vibe: vibe._id,
+        requester: currentUserId,
+      }).select("status requestedAt");
+
+      const hasAcceptedRequest = Boolean(userRequest && userRequest.status === "accepted");
+
+      if (isCreator || isParticipant || hasAcceptedRequest) {
+        showActualLocation = true;
+      }
     }
 
     let displayLocation = {
@@ -206,6 +243,19 @@ const getVibeById = async (req, res) => {
       vibe,
       displayLocation,
       showActualLocation,
+      exactLocation: showActualLocation
+        ? {
+            latitude: vibe.geometry.coordinates[1],
+            longitude: vibe.geometry.coordinates[0],
+            locationName: vibe.locationName,
+          }
+        : null,
+      userRequest: userRequest
+        ? {
+            status: userRequest.status,
+            requestedAt: userRequest.requestedAt,
+          }
+        : null,
     });
   } catch (err) {
     console.error("Error fetching single vibe:", err);
@@ -241,7 +291,9 @@ const updateVibe = async (req, res) => {
     if (title) vibe.title = title;
     if (description) vibe.description = description;
     if (locationName) vibe.locationName = locationName;
-    if (status) vibe.status = status;
+    if (status) {
+      vibe.status = status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
+    }
     if (startDate) vibe.startDate = new Date(startDate);
 
     if (latitude && longitude) {

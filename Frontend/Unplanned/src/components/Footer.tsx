@@ -1,56 +1,71 @@
 import type { FC } from "react";
 import { Link } from "react-router-dom";
-import { ShieldCheck, Compass } from "lucide-react";
+import { Flame } from "lucide-react";
 import "./Footer.css";
 
 const Footer: FC = () => {
+  const currentYear = new Date().getFullYear();
+
   return (
-    <footer className="app-footer" role="contentinfo">
+    <footer className="app-footer" role="contentinfo" aria-label="Unplanned Global Footer">
       <div className="app-footer-inner">
-        {/* Brand Mission Column */}
+        {/* Brand & Mission Column */}
         <div className="footer-brand-col">
-          <div className="footer-logo-title">
-            <Compass size={22} strokeWidth={2.4} />
-            <span>Unplanned</span>
-          </div>
+          <Link to="/" className="footer-logo-link" aria-label="Unplanned Home">
+            <span className="footer-logo-text">Unplanned</span>
+          </Link>
+
           <p className="footer-tagline">
-            The hyperlocal microadventure platform engineered for spontaneous
-            explorers. Discover open sparks with privacy-first blurred coordinates.
+            The hyperlocal microadventure platform engineered for spontaneous explorers.
+            Discover open sparks with privacy-first blurred coordinates.
           </p>
-          <div className="footer-privacy-pill">
-            <ShieldCheck size={14} />
-            <span>Mathematical Fuzzing: ~1km Radius Privacy</span>
-          </div>
+
+          <Link to="/vibes/create" className="footer-ignite-btn">
+            <Flame size={15} />
+            <span>Ignite a Spark</span>
+          </Link>
         </div>
 
-        {/* Global Navigation Groups */}
-        <div className="footer-nav-groups">
-          <div>
-            <h4 className="footer-col-title">Exploration</h4>
-            <ul className="footer-links">
+        {/* Streamlined Navigation Links */}
+        <div className="footer-nav-columns">
+          <div className="footer-nav-col">
+            <h4 className="footer-nav-col-title">Exploration</h4>
+            <ul className="footer-nav-list">
               <li>
-                <Link to="/vibes">Live Vibes Feed</Link>
+                <Link to="/vibes" className="footer-nav-link">
+                  Live Vibes
+                </Link>
               </li>
               <li>
-                <Link to="/trail">Trail History & Sparks</Link>
+                <Link to="/trail" className="footer-nav-link">
+                  Expedition Trail
+                </Link>
               </li>
               <li>
-                <Link to="/">Local Radar</Link>
+                <Link to="/vibes/create" className="footer-nav-link">
+                  Broadcast Spark
+                </Link>
               </li>
             </ul>
           </div>
 
-          <div>
-            <h4 className="footer-col-title">Account & Aura</h4>
-            <ul className="footer-links">
+          <div className="footer-nav-col">
+            <h4 className="footer-nav-col-title">Account</h4>
+            <ul className="footer-nav-list">
               <li>
-                <Link to="/login">Sign In</Link>
+                <Link to="/profile" className="footer-nav-link">
+                  Explorer Profile
+                </Link>
               </li>
               <li>
-                <Link to="/register">Create Account</Link>
+                <Link to="/login" className="footer-nav-link">
+                  Sign In
+                </Link>
               </li>
               <li>
-                <Link to="/profile">My Aura Profile</Link>
+                <Link to="/register" className="footer-nav-link">
+                  Create Account
+                </Link>
               </li>
             </ul>
           </div>
@@ -59,7 +74,7 @@ const Footer: FC = () => {
 
       {/* Global Bottom Bar */}
       <div className="footer-bottom-bar">
-        <span>&copy; {new Date().getFullYear()} Unplanned. All rights reserved.</span>
+        <span>&copy; {currentYear} Unplanned. All rights reserved.</span>
         <span>Built for Spontaneous Wanderers.</span>
       </div>
     </footer>

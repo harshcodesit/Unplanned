@@ -189,17 +189,26 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-left: 6px;
-  padding-left: 8px;
+  margin-left: 8px;
+  padding-left: 10px;
   border-left: 1px solid rgba(240, 237, 228, 0.18);
 }
 
 /* Profile Badge with Avatar */
 .nav-btn-profile {
-  padding: 4px 12px 4px 6px;
+  padding: 4px 14px 4px 7px;
+  height: 34px;
   border-radius: 9999px;
-  background-color: rgba(240, 237, 228, 0.08);
-  border: 1px solid rgba(240, 237, 228, 0.18);
+  background-color: rgba(240, 237, 228, 0.1);
+  border: 1px solid rgba(240, 237, 228, 0.24);
+  gap: 0.5rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.nav-btn-profile:hover {
+  background-color: rgba(240, 237, 228, 0.18);
+  border-color: rgba(240, 237, 228, 0.4);
+  transform: translateY(-1px);
 }
 
 .nav-user-avatar {

@@ -1,5 +1,5 @@
 import { useEffect, useState, type FC } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   Calendar,
   MapPin,
@@ -7,14 +7,14 @@ import {
   Radio,
   Search,
   Sparkles,
-  Trash2,
   Users,
   ArrowRight,
 } from "lucide-react";
 import API from "../api/axios";
 import { useAuth } from "../context/AuthContext";
 import { useToast } from "../context/ToastContext";
-import type { JoinRequestResponse, Vibe, VibesListResponse } from "../types/vibe";
+import type { Vibe, VibesListResponse } from "../types/vibe";
+import { DEFAULT_AVATAR_URL, getAvatarUrl } from "../types/user";
 import "./VibesFeed.css";
 
 type FilterTab = "all" | "today" | "open";
@@ -22,15 +22,11 @@ type FilterTab = "all" | "today" | "open";
 const VibesFeed: FC = () => {
   const { user } = useAuth();
   const toast = useToast();
-  const navigate = useNavigate();
-  const location = useLocation();
 
   const [vibes, setVibes] = useState<Vibe[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [activeTab, setActiveTab] = useState<FilterTab>("all");
-  const [joiningVibeId, setJoiningVibeId] = useState<string | null>(null);
-  const [requestedMap, setRequestedMap] = useState<Record<string, boolean>>({});
 
   const fetchVibes = async () => {
     setIsLoading(true);
@@ -85,71 +81,6 @@ const VibesFeed: FC = () => {
     }
   };
 
-  // Join request handler
-  const handleRequestJoin = async (vibe: Vibe) => {
-    if (!user) {
-      toast.warning("Please sign in or create an account to request entry to microadventures.", "Sign In Required");
-      navigate("/login", { state: { from: location } });
-      return;
-    }
-
-    if (vibe.creator._id === user._id) {
-      toast.info("You are the host of this microadventure!", "Host Status");
-      return;
-    }
-
-    setJoiningVibeId(vibe._id);
-    try {
-      const res = await API.post<JoinRequestResponse>(`/vibes/${vibe._id}/request`);
-      if (res.data.success) {
-        setRequestedMap((prev) => ({ ...prev, [vibe._id]: true }));
-        toast.success(
-          res.data.message || "Join request sent! The host has been notified.",
-          "Request Sent"
-        );
-      }
-    } catch (err: unknown) {
-      interface AxiosErrorResponse {
-        response?: {
-          data?: {
-            errors?: { msg: string }[];
-            message?: string;
-          };
-        };
-      }
-
-      const axiosError = err as AxiosErrorResponse;
-      const backendErrors = axiosError.response?.data?.errors;
-      const singleMessage = axiosError.response?.data?.message;
-
-      if (Array.isArray(backendErrors) && backendErrors.length > 0) {
-        toast.warning(backendErrors[0].msg, "Request Notice");
-      } else if (singleMessage) {
-        toast.warning(singleMessage, "Request Notice");
-      } else {
-        toast.error("Could not send join request. Please try again.", "Request Error");
-      }
-    } finally {
-      setJoiningVibeId(null);
-    }
-  };
-
-  // Delete vibe handler for creators
-  const handleDeleteVibe = async (vibeId: string) => {
-    if (!window.confirm("Are you sure you want to cancel and remove this microadventure?")) {
-      return;
-    }
-
-    try {
-      await API.delete(`/vibes/${vibeId}`);
-      toast.success("Microadventure removed from the live radar.", "Vibe Removed");
-      setVibes((prev) => prev.filter((v) => v._id !== vibeId));
-    } catch (err) {
-      console.error("Failed to delete vibe:", err);
-      toast.error("Could not delete the microadventure. Try again.", "Delete Error");
-    }
-  };
-
   // Filtering
   const filteredVibes = vibes.filter((vibe) => {
     const q = searchQuery.toLowerCase().trim();
@@ -162,7 +93,8 @@ const VibesFeed: FC = () => {
     if (!matchesQuery) return false;
 
     if (activeTab === "open") {
-      return vibe.status === "Open";
+      const isPast = Boolean(vibe.endDate && new Date(vibe.endDate).getTime() < Date.now());
+      return vibe.status === "Open" && !isPast;
     }
 
     if (activeTab === "today") {
@@ -240,15 +172,7 @@ const VibesFeed: FC = () => {
           >
             Happening Today
           </button>
-          <button
-            type="button"
-            className={`feed-filter-chip ${activeTab === "open" ? "active" : ""}`}
-            onClick={() => setActiveTab("open")}
-            role="tab"
-            aria-selected={activeTab === "open"}
-          >
-            Open Spots
-          </button>
+
         </div>
       </div>
 
@@ -270,7 +194,7 @@ const VibesFeed: FC = () => {
           <div className="empty-radar-orb">
             <Radio size={36} />
           </div>
-          <h2 className="empty-state-title">No Active Beacons Detected</h2>
+          <h2 className="empty-state-title">No Active Sparks Detected</h2>
           <p className="empty-state-desc">
             {searchQuery
               ? `No microadventures match "${searchQuery}". Try broadening your search or clear filters.`
@@ -290,7 +214,6 @@ const VibesFeed: FC = () => {
               user &&
               vibe.participants &&
               vibe.participants.some((p) => p._id === user._id);
-            const isRequested = requestedMap[vibe._id];
             const hasImages = Boolean(vibe.image && vibe.image.length > 0 && vibe.image[0]?.url);
 
             return (
@@ -305,7 +228,13 @@ const VibesFeed: FC = () => {
                     <Radio size={13} />
                     <span>Microadventure</span>
                   </div>
-                  <span className={`vibe-status-pill ${vibe.status}`}>{vibe.status}</span>
+                  {(() => {
+                    const isClosed =
+                      Boolean(vibe.endDate && new Date(vibe.endDate).getTime() < Date.now()) ||
+                      vibe.status?.toLowerCase() === "closed";
+                    const displayStatus = isClosed ? "Closed" : vibe.status;
+                    return <span className={`vibe-status-pill ${displayStatus}`}>{displayStatus}</span>;
+                  })()}
                 </div>
 
                 {/* Card Body */}
@@ -327,7 +256,9 @@ const VibesFeed: FC = () => {
                     </div>
                   )}
 
-                  <h3 className="vibe-card-title">{vibe.title}</h3>
+                  <Link to={`/vibes/${vibe._id}`} style={{ textDecoration: "none", color: "inherit" }}>
+                    <h3 className="vibe-card-title">{vibe.title}</h3>
+                  </Link>
                   <p className="vibe-card-desc">{vibe.description}</p>
 
                   {/* Metadata: Location & Time */}
@@ -360,21 +291,18 @@ const VibesFeed: FC = () => {
                   <div className="vibe-ticket-perforation" aria-hidden="true" />
                 </div>
 
-                {/* Card Footer: Host & Action */}
+                {/* Card Footer: Host & View Details */}
                 <div className="vibe-ticket-footer">
                   {/* Host Slot */}
                   <div className="vibe-host-slot">
-                    {vibe.creator?.avatarUrl ? (
-                      <img
-                        src={vibe.creator.avatarUrl}
-                        alt={vibe.creator.name || vibe.creator.username}
-                        className="vibe-host-avatar"
-                      />
-                    ) : (
-                      <div className="vibe-host-avatar-placeholder">
-                        {(vibe.creator?.name || vibe.creator?.username || "W")[0].toUpperCase()}
-                      </div>
-                    )}
+                    <img
+                      src={getAvatarUrl(vibe.creator?.avatarUrl)}
+                      alt={vibe.creator?.name || vibe.creator?.username || "Host"}
+                      className="vibe-host-avatar"
+                      onError={(e) => {
+                        e.currentTarget.src = DEFAULT_AVATAR_URL;
+                      }}
+                    />
                     <div className="vibe-host-info">
                       <span className="vibe-host-label">Hosted by</span>
                       <span className="vibe-host-name">
@@ -383,47 +311,20 @@ const VibesFeed: FC = () => {
                     </div>
                   </div>
 
-                  {/* Contextual Action Button */}
-                  {isHost ? (
-                    <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                      <span className="vibe-host-badge">Your Beacon</span>
-                      <button
-                        type="button"
-                        className="vibe-delete-btn"
-                        onClick={() => handleDeleteVibe(vibe._id)}
-                        aria-label="Delete vibe"
-                        title="Cancel & Delete Vibe"
-                      >
-                        <Trash2 size={14} />
-                      </button>
-                    </div>
-                  ) : isParticipant ? (
-                    <span className="vibe-host-badge" style={{ color: "#059669", background: "#ECFDF5" }}>
-                      ✓ Attending
-                    </span>
-                  ) : isRequested ? (
-                    <span className="vibe-host-badge" style={{ color: "#D97706", background: "#FEF3C7" }}>
-                      Pending Approval
-                    </span>
-                  ) : vibe.status === "Open" ? (
-                    <button
-                      type="button"
-                      className="vibe-join-btn"
-                      onClick={() => handleRequestJoin(vibe)}
-                      disabled={joiningVibeId === vibe._id}
-                    >
-                      {joiningVibeId === vibe._id ? (
-                        <span>Requesting...</span>
-                      ) : (
-                        <>
-                          <span>Request Entry</span>
-                          <ArrowRight size={14} />
-                        </>
-                      )}
-                    </button>
-                  ) : (
-                    <span className="vibe-host-badge">Closed</span>
-                  )}
+                  {/* Dedicated View Details Button on every card */}
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                    {isHost && <span className="vibe-host-badge">Your Spark</span>}
+                    {isParticipant && (
+                      <span className="vibe-host-badge" style={{ color: "#059669", background: "#ECFDF5" }}>
+                        ✓ Attending
+                      </span>
+                    )}
+
+                    <Link to={`/vibes/${vibe._id}`} className="vibe-join-btn">
+                      <span>View Details</span>
+                      <ArrowRight size={14} />
+                    </Link>
+                  </div>
                 </div>
               </article>
             );

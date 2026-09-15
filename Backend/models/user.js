@@ -36,7 +36,7 @@ const UserSchema = new mongoose.Schema(
     },
     avatarUrl: {
       type: String,
-      default: "/images/default-avatar.png",
+      default: "https://res.cloudinary.com/dzz15h9wq/image/upload/v1789508270/avatar-3814049_1280.webp",
     },
     hostedVibes: [
       {
@@ -51,7 +51,11 @@ const UserSchema = new mongoose.Schema(
       },
     ],
   },
-  { timestamps: true },
+  { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } },
 );
+
+UserSchema.virtual("avatar").get(function () {
+  return this.avatarUrl;
+});
 
 module.exports = mongoose.model("User", UserSchema);

@@ -10,6 +10,7 @@ const {
   logoutUser,
   updateProfile,
   changePassword,
+  deleteUserAccount,
   getAuraProfile,
 } = require("../controllers/userController");
 
@@ -20,5 +21,6 @@ router.post("/register", handleOptionalAvatar, registerUser);
 router.post("/logout", logoutUser);
 router.put("/update-profile", verifyToken, handleOptionalAvatar, updateProfile);
 router.put("/change-password", verifyToken, uploadNone, changePassword);
+router.delete("/delete-account", verifyToken, deleteUserAccount);
 
 module.exports = router;

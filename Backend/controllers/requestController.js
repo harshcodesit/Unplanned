@@ -12,6 +12,16 @@ const sendJoinRequest = async (req, res) => {
       return res.status(404).json({ errors: [{ msg: "Vibe not found." }] });
     }
 
+    if (vibe.endDate && new Date(vibe.endDate) < new Date()) {
+      if (vibe.status === "Open") {
+        vibe.status = "Closed";
+        await vibe.save();
+      }
+      return res.status(400).json({
+        errors: [{ msg: "This microadventure has concluded and is closed to new join requests." }],
+      });
+    }
+
     if (vibe.status !== "Open") {
       return res.status(400).json({
         errors: [{ msg: `Cannot join a vibe that is ${vibe.status.toLowerCase()}.` }],
@@ -150,20 +160,36 @@ const acceptJoinRequest = async (req, res) => {
     request.status = "accepted";
     await request.save();
 
+    const updatedVibe = await Vibe.findByIdAndUpdate(
+      vibeId,
+      {
+        $addToSet: { participants: request.requester },
+      },
+      { new: true }
+    )
+      .populate("creator", "username name avatarUrl")
+      .populate("participants", "username name avatarUrl");
 
-    await Vibe.findByIdAndUpdate(vibeId, {
-      $addToSet: { participants: request.requester },
-    });
-
-   
     await User.findByIdAndUpdate(request.requester, {
       $addToSet: { joinedVibes: vibeId },
     });
+
+    const exactCoordinates = {
+      latitude: updatedVibe.geometry.coordinates[1],
+      longitude: updatedVibe.geometry.coordinates[0],
+    };
 
     return res.status(200).json({
       success: true,
       message: "Request accepted successfully!",
       request,
+      vibe: updatedVibe,
+      displayLocation: exactCoordinates,
+      exactLocation: {
+        ...exactCoordinates,
+        locationName: updatedVibe.locationName,
+      },
+      showActualLocation: true,
     });
   } catch (err) {
     console.error("Error accepting join request:", err);

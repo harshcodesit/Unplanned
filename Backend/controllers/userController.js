@@ -1,4 +1,6 @@
 const User = require("../models/user.js");
+const Vibe = require("../models/vibe.js");
+const Request = require("../models/request.js");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
@@ -335,11 +337,54 @@ const changePassword = async (req, res) => {
   }
 };
 
+const deleteUserAccount = async (req, res) => {
+  try {
+    const userId = req.user?.userId || req.user?._id;
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ errors: [{ msg: "User account not found." }] });
+    }
+
+    // 1. Delete all vibes created by this user
+    await Vibe.deleteMany({ creator: userId });
+
+    // 2. Delete all requests made by this user
+    await Request.deleteMany({ requester: userId });
+
+    // 3. Remove user from participants of any vibes
+    await Vibe.updateMany(
+      { participants: userId },
+      { $pull: { participants: userId } }
+    );
+
+    // 4. Delete the user document
+    await User.findByIdAndDelete(userId);
+
+    // 5. Clear auth token cookie
+    res.clearCookie("token", {
+      httpOnly: true,
+      sameSite: "strict",
+      secure: process.env.NODE_ENV === "production",
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Account and associated data deleted successfully.",
+    });
+  } catch (err) {
+    console.error("Error deleting user account:", err);
+    return res.status(500).json({
+      errors: [{ msg: "Failed to delete account. Please try again later." }],
+    });
+  }
+};
+
 module.exports = {
   loginUser,
   registerUser,
   getAuraProfile,
   updateProfile,
   changePassword,
+  deleteUserAccount,
   logoutUser
 };

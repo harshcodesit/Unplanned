@@ -1,5 +1,5 @@
 import { useState, type ChangeEvent, type FC, type FormEvent } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import {
   AlertCircle,
   ArrowRight,
@@ -43,10 +43,31 @@ interface AlertState {
   messages: string[];
 }
 
+interface LocationStateWithFrom {
+  from?: string | { pathname?: string; search?: string; hash?: string };
+}
+
 const Register: FC = () => {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const location = useLocation();
+  const { user, loading, login } = useAuth();
   const toast = useToast();
+
+  // Compute return URL for deep linking after auth
+  const locationState = location.state as LocationStateWithFrom | null;
+  let targetReturnUrl = "/";
+  if (locationState?.from) {
+    if (typeof locationState.from === "string") {
+      targetReturnUrl = locationState.from;
+    } else if (locationState.from.pathname) {
+      targetReturnUrl = `${locationState.from.pathname}${locationState.from.search || ""}${locationState.from.hash || ""}`;
+    }
+  }
+
+  // If already logged in, redirect straight to profile page
+  if (!loading && user) {
+    return <Navigate to="/profile" replace />;
+  }
 
   // Form input values
   const [formData, setFormData] = useState({
@@ -149,7 +170,7 @@ const Register: FC = () => {
         login(registeredUser);
 
         // Redirect user immediately: the global toast remains visible on the destination page
-        navigate("/", { replace: true });
+        navigate(targetReturnUrl, { replace: true });
       }
     } catch (err: unknown) {
       setIsLoading(false);
@@ -450,7 +471,7 @@ const Register: FC = () => {
           {/* Switch to Login Link */}
           <div className="register-footer-switch">
             <span>Already have an explorer account?</span>
-            <Link to="/login" className="register-switch-link">
+            <Link to="/login" state={location.state} className="register-switch-link">
               Sign In
             </Link>
           </div>

@@ -9,6 +9,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import VibesFeed from "./pages/VibesFeed";
+import VibeDetails from "./pages/VibeDetails";
 import VibeCreate from "./pages/VibeCreate";
 import Trail from "./pages/Trail";
 import Profile from "./pages/Profile";
@@ -23,12 +24,13 @@ const App: FC = () => {
               {/* Primary Hub Routes */}
               <Route path="/" element={<Home />} />
               <Route path="/vibes" element={<VibesFeed />} />
-              <Route path="/trail" element={<Trail />} />
+              <Route path="/vibes/:id" element={<VibeDetails />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
 
               {/* Protected Routes */}
               <Route element={<ProtectedRoute />}>
+                <Route path="/trail" element={<Trail />} />
                 <Route path="/vibes/create" element={<VibeCreate />} />
                 <Route path="/profile" element={<Profile />} />
               </Route>

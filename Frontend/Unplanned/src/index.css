@@ -12,17 +12,17 @@
   --color-pine-light: #005f57;
   --color-pine-surface: rgba(0, 71, 65, 0.08);
 
-  --color-cream: #FBCA89;
-  --color-cream-soft: #F5BD74;
+  --color-cream: #F9EED9;
+  --color-cream-soft: #EEDBBF;
   --color-cream-pure: #FFFFFF;
-  --color-cream-surface: rgba(251, 202, 137, 0.15);
+  --color-cream-surface: rgba(249, 238, 217, 0.25);
 
   /* Accent & Editorial Highlights */
   --color-terracotta: #C25E3E;
   --color-amber: #E5A93C;
   --color-amber-hover: #F0B54E;
   --color-emerald: #10B981;
-  --color-charcoal: #182420;
+  --color-charcoal: #111C18;
   --color-muted: #6B7280;
   --color-border: rgba(0, 71, 65, 0.14);
 
@@ -129,7 +129,7 @@ h3 {
 
 p {
   line-height: 1.6;
-  color: #2D3748;
+  color: #24322C;
 }
 
 /* Accessible Focus Ring */
