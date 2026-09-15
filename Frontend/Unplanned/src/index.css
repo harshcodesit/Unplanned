@@ -12,10 +12,10 @@
   --color-pine-light: #005f57;
   --color-pine-surface: rgba(0, 71, 65, 0.08);
 
-  --color-cream: #F0EDE4;
-  --color-cream-soft: #E6E2D8;
+  --color-cream: #FBCA89;
+  --color-cream-soft: #F5BD74;
   --color-cream-pure: #FFFFFF;
-  --color-cream-surface: rgba(240, 237, 228, 0.12);
+  --color-cream-surface: rgba(251, 202, 137, 0.15);
 
   /* Accent & Editorial Highlights */
   --color-terracotta: #C25E3E;
@@ -129,7 +129,7 @@ h3 {
 
 p {
   line-height: 1.6;
-  color: #4B5563;
+  color: #2D3748;
 }
 
 /* Accessible Focus Ring */

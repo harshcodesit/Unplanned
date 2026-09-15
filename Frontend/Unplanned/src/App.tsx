@@ -9,6 +9,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import VibesFeed from "./pages/VibesFeed";
+import VibeCreate from "./pages/VibeCreate";
 import Trail from "./pages/Trail";
 import Profile from "./pages/Profile";
 
@@ -28,6 +29,7 @@ const App: FC = () => {
 
               {/* Protected Routes */}
               <Route element={<ProtectedRoute />}>
+                <Route path="/vibes/create" element={<VibeCreate />} />
                 <Route path="/profile" element={<Profile />} />
               </Route>
 

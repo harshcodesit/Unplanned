@@ -1,0 +1,520 @@
+/* ==========================================================================
+   VibeCreate.css - Architectural Vibe Broadcast Permitted Form
+   Design Identity: Transmitter Permit Silhouette, Concave Scoops, Pine & Amber
+   ========================================================================== */
+
+.vibe-create-container {
+  width: 100%;
+  max-width: 680px;
+  margin: 2.25rem auto 4.5rem auto;
+  padding: 0 1.25rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  animation: vibeCreateFadeIn 0.3s var(--ease-spring);
+}
+
+@keyframes vibeCreateFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Permit Card Frame with Semicircular Waist Notches
+   -------------------------------------------------------------------------- */
+.vibe-create-card {
+  width: 100%;
+  background-color: #FFFFFF;
+  border: 1.5px solid rgba(0, 71, 65, 0.16);
+  border-radius: 28px;
+  box-shadow: 0 20px 50px rgba(0, 41, 37, 0.12);
+  position: relative;
+  overflow: visible;
+  padding-bottom: 2.5rem;
+  box-sizing: border-box;
+}
+
+/* Ticket-Style Semicircle Waist Cutout Notches (Seamless Arch Geometry) */
+.vibe-create-notch-left,
+.vibe-create-notch-right {
+  position: absolute;
+  top: 175px;
+  width: 12px;
+  height: 24px;
+  background-color: var(--color-cream);
+  background-clip: padding-box;
+  z-index: 3;
+  pointer-events: none;
+  box-sizing: border-box;
+}
+
+.vibe-create-notch-left {
+  left: -1.5px;
+  border-top: 1.5px solid rgba(0, 71, 65, 0.16);
+  border-right: 1.5px solid rgba(0, 71, 65, 0.16);
+  border-bottom: 1.5px solid rgba(0, 71, 65, 0.16);
+  border-left: none;
+  border-radius: 0 12px 12px 0;
+}
+
+.vibe-create-notch-right {
+  right: -1.5px;
+  border-top: 1.5px solid rgba(0, 71, 65, 0.16);
+  border-left: 1.5px solid rgba(0, 71, 65, 0.16);
+  border-bottom: 1.5px solid rgba(0, 71, 65, 0.16);
+  border-right: none;
+  border-radius: 12px 0 0 12px;
+}
+
+/* Top Notched Header with Inverted Concave Scoop */
+.vibe-create-header {
+  position: relative;
+  background-color: var(--color-pine);
+  color: var(--color-cream);
+  padding: 14px 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top-left-radius: 26px;
+  border-bottom-right-radius: 22px;
+  width: 80%;
+  box-sizing: border-box;
+}
+
+.vibe-create-header::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: -22px;
+  width: 22px;
+  height: 22px;
+  background: transparent;
+  border-top-left-radius: 22px;
+  box-shadow: -6px -6px 0 6px var(--color-pine);
+  pointer-events: none;
+}
+
+.vibe-create-kicker-group {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.vibe-create-kicker-icon {
+  color: var(--color-amber);
+}
+
+.vibe-create-kicker-text {
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-weight: 850;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-cream);
+}
+
+.vibe-create-step-badge {
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 3px 9px;
+  border-radius: 9999px;
+  background-color: rgba(229, 169, 60, 0.2);
+  color: #E5A93C;
+  border: 1px solid rgba(229, 169, 60, 0.35);
+}
+
+/* --------------------------------------------------------------------------
+   Card Body & Title Block
+   -------------------------------------------------------------------------- */
+.vibe-create-body {
+  padding: 2rem 2.25rem 0 2.25rem;
+}
+
+.vibe-create-title-block {
+  margin-bottom: 1.75rem;
+}
+
+.vibe-create-title {
+  font-family: var(--font-display);
+  font-size: 2.15rem;
+  font-weight: 850;
+  color: var(--color-charcoal);
+  letter-spacing: var(--tracking-tighter);
+  line-height: 1.2;
+  margin: 0 0 0.5rem 0;
+}
+
+.vibe-create-subtitle {
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: #4B5563;
+  margin: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Integrated Alert Component
+   -------------------------------------------------------------------------- */
+.vibe-create-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  padding: 14px 18px;
+  border-radius: 16px;
+  margin-bottom: 1.75rem;
+  animation: alertPopIn 0.2s var(--ease-spring);
+  box-sizing: border-box;
+}
+
+.vibe-create-alert.error {
+  background-color: #FEF2F2;
+  border: 1.5px solid #FCA5A5;
+  color: #991B1B;
+}
+
+.vibe-create-alert-icon {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.vibe-create-alert-content {
+  flex: 1;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.vibe-create-alert-title {
+  font-weight: 800;
+  margin-bottom: 0.2rem;
+}
+
+.vibe-create-alert-list {
+  list-style-type: disc;
+  padding-left: 1.2rem;
+  margin: 0.35rem 0 0 0;
+}
+
+.vibe-create-alert-list li {
+  margin-bottom: 0.2rem;
+}
+
+.vibe-create-alert-close {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+  opacity: 0.7;
+  padding: 2px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.15s ease;
+}
+
+/* --------------------------------------------------------------------------
+   Form Fields & Controls
+   -------------------------------------------------------------------------- */
+.vibe-create-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.vibe-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.vibe-field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.vibe-field-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--color-charcoal);
+  letter-spacing: 0.02em;
+}
+
+.vibe-field-optional {
+  font-size: 0.74rem;
+  font-weight: 500;
+  color: #6B7280;
+}
+
+.vibe-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.vibe-input-icon {
+  position: absolute;
+  left: 15px;
+  color: #9CA3AF;
+  pointer-events: none;
+  transition: color 0.2s ease;
+}
+
+.vibe-input {
+  width: 100%;
+  height: 48px;
+  background-color: #FBFBF9;
+  border: 1.5px solid rgba(0, 71, 65, 0.16);
+  border-radius: 14px;
+  padding: 0 16px 0 44px;
+  font-family: var(--font-sans);
+  font-size: 0.94rem;
+  color: var(--color-charcoal);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+  box-sizing: border-box;
+}
+
+.vibe-input:focus {
+  outline: none;
+  border-color: var(--color-pine);
+  background-color: #FFFFFF;
+  box-shadow: 0 0 0 3.5px rgba(0, 71, 65, 0.12);
+}
+
+.vibe-input-wrapper:focus-within .vibe-input-icon {
+  color: var(--color-pine);
+}
+
+.vibe-textarea {
+  width: 100%;
+  min-height: 100px;
+  background-color: #FBFBF9;
+  border: 1.5px solid rgba(0, 71, 65, 0.16);
+  border-radius: 14px;
+  padding: 12px 16px;
+  font-family: var(--font-sans);
+  font-size: 0.94rem;
+  color: var(--color-charcoal);
+  line-height: 1.5;
+  resize: vertical;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+  box-sizing: border-box;
+}
+
+.vibe-textarea:focus {
+  outline: none;
+  border-color: var(--color-pine);
+  background-color: #FFFFFF;
+  box-shadow: 0 0 0 3.5px rgba(0, 71, 65, 0.12);
+}
+
+/* Geolocation Radar Bar & City Presets */
+.vibe-geo-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.vibe-geo-detect-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--color-pine);
+  background: rgba(0, 71, 65, 0.08);
+  border: 1px solid rgba(0, 71, 65, 0.15);
+  border-radius: 9999px;
+  padding: 4px 10px;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
+}
+
+.vibe-geo-detect-btn:hover {
+  background-color: var(--color-pine);
+  color: var(--color-cream);
+  transform: scale(1.02);
+}
+
+.vibe-preset-chips {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+  margin-top: 0.35rem;
+}
+
+.vibe-preset-chip {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #4B5563;
+  background-color: #F3F4F6;
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+  padding: 3px 8px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.vibe-preset-chip:hover {
+  background-color: rgba(0, 71, 65, 0.08);
+  color: var(--color-pine);
+  border-color: rgba(0, 71, 65, 0.2);
+}
+
+/* Image Upload Area */
+.vibe-upload-zone {
+  border: 1.5px dashed rgba(0, 71, 65, 0.25);
+  border-radius: 16px;
+  padding: 1.5rem 1rem;
+  text-align: center;
+  background-color: rgba(0, 71, 65, 0.02);
+  cursor: pointer;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+  position: relative;
+}
+
+.vibe-upload-zone:hover {
+  border-color: var(--color-pine);
+  background-color: rgba(0, 71, 65, 0.05);
+}
+
+.vibe-upload-icon {
+  color: var(--color-pine);
+  margin-bottom: 0.5rem;
+}
+
+.vibe-upload-text {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--color-charcoal);
+  margin-bottom: 0.2rem;
+}
+
+.vibe-upload-subtext {
+  font-size: 0.76rem;
+  color: #6B7280;
+}
+
+.vibe-hidden-input {
+  display: none;
+}
+
+/* Uploaded Images Thumbnails */
+.vibe-images-preview-grid {
+  display: flex;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+  margin-top: 0.75rem;
+}
+
+.vibe-img-thumb-wrap {
+  position: relative;
+  width: 72px;
+  height: 72px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 71, 65, 0.16);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.vibe-img-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.vibe-img-thumb-remove {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.65);
+  color: #FFFFFF;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.15s ease;
+}
+
+.vibe-img-thumb-remove:hover {
+  background: #DC2626;
+}
+
+/* Submit Action Button */
+.vibe-submit-btn {
+  width: 100%;
+  height: 52px;
+  border-radius: 9999px;
+  background-color: var(--color-amber);
+  color: #1a1708;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 850;
+  letter-spacing: -0.01em;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-top: 0.75rem;
+  box-shadow: 0 4px 16px rgba(229, 169, 60, 0.38);
+  transition: transform 0.18s var(--ease-spring), background-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.vibe-submit-btn:hover:not(:disabled) {
+  background-color: var(--color-amber-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 22px rgba(229, 169, 60, 0.45);
+}
+
+.vibe-submit-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+@media (max-width: 600px) {
+  .vibe-create-container {
+    margin: 1.25rem auto 3rem auto;
+    padding: 0 0.85rem;
+  }
+
+  .vibe-create-body {
+    padding: 1.75rem 1.5rem 0 1.5rem;
+  }
+
+  .vibe-create-title {
+    font-size: 1.75rem;
+  }
+
+  .vibe-field-row {
+    grid-template-columns: 1fr;
+  }
+
+  .vibe-create-header {
+    width: 88%;
+  }
+}
