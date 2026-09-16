@@ -27,6 +27,7 @@ interface BackendErrorItem {
 
 interface RegisterResponse {
   message: string;
+  token?: string;
   user: {
     id: string;
     name: string;
@@ -160,7 +161,7 @@ const Register: FC = () => {
           email: response.data.user.email,
           avatarUrl: response.data.user.avatarUrl,
         };
-        login(registeredUser);
+        login(registeredUser, response.data.token);
 
         navigate(targetReturnUrl, { replace: true });
       }

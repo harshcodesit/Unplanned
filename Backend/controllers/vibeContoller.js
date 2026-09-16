@@ -123,7 +123,7 @@ const createVibe = async (req, res) => {
     }
 
     const start = new Date(startDate);
-    if (start < new Date()) {
+    if (start.getTime() < Date.now() - 10 * 60 * 1000) {
       errors.push({ msg: "Start date cannot be in the past." });
     }
 

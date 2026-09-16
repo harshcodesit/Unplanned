@@ -24,6 +24,7 @@ interface BackendErrorItem {
 
 interface LoginResponse {
   message: string;
+  token?: string;
   user: {
     id: string;
     name: string;
@@ -141,7 +142,7 @@ const Login: FC = () => {
           email: response.data.user.email,
           avatarUrl: response.data.user.avatarUrl,
         };
-        login(authenticatedUser);
+        login(authenticatedUser, response.data.token);
 
         navigate(targetReturnUrl, { replace: true });
       }

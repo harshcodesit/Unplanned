@@ -185,9 +185,7 @@ const VibeCreate: FC = () => {
         formData.append("image", file);
       });
 
-      const response = await API.post<SingleVibeResponse>("/vibes", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      const response = await API.post<SingleVibeResponse>("/vibes", formData);
 
       if (response.data.success) {
         toast.success(

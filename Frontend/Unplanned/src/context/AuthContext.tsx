@@ -24,7 +24,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     checkAuth();
   }, []);
 
-  const login = (userData: User) => {
+  const login = (userData: User, token?: string) => {
+    if (token) {
+      localStorage.setItem("token", token);
+    }
     setUser(userData);
   };
 
@@ -34,9 +37,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     } catch (err) {
       console.error("Logout error:", err);
     } finally {
+      localStorage.removeItem("token");
       setUser(null);
     }
   };
+
 
     return (
     <AuthContext.Provider value={{ user, loading, login, logout, checkAuth }}>

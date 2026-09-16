@@ -83,6 +83,7 @@ const registerUser = async (req, res) => {
       .cookie("token", token, getAuthCookieOptions())
       .json({
         message: "User registered successfully!",
+        token,
         user: {
           id: savedUser._id,
           name: savedUser.name,
@@ -155,6 +156,7 @@ const loginUser = async (req, res) => {
       .cookie("token", token, getAuthCookieOptions())
       .json({
         message: "Logged in successfully!",
+        token,
         user: {
           id: user._id,
           name: user.name,

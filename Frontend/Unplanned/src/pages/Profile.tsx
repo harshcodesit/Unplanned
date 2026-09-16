@@ -136,9 +136,7 @@ const Profile: FC = () => {
     }
 
     try {
-      const res = await API.put("/user/update-profile", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      const res = await API.put("/user/update-profile", formData);
 
       if (res.data.success) {
         toast.success("Explorer passport updated successfully!", "Identity Saved");
