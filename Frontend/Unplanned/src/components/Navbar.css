@@ -329,6 +329,9 @@
   left: 50%;
   transform: translateX(-50%) translateY(-12px);
   width: min(940px, calc(100vw - 36px));
+  max-height: calc(100vh - 84px);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   background: linear-gradient(180deg, #003e38 0%, #002d29 100%);
   border: 1.5px solid rgba(240, 237, 228, 0.18);
   border-radius: 20px;
@@ -363,7 +366,7 @@
   text-decoration: none;
   color: var(--color-cream);
   font-family: var(--font-sans);
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 600;
   transition: background-color var(--duration-fast) ease, color var(--duration-fast) ease;
 }
@@ -382,6 +385,7 @@
 
 .mobile-item-icon {
   color: var(--color-amber);
+  flex-shrink: 0;
 }
 
 .mobile-nav-item.active .mobile-item-icon {
@@ -392,6 +396,182 @@
   height: 1px;
   background: rgba(240, 237, 228, 0.14);
   margin: 14px 0;
+}
+
+.mobile-user-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: rgba(0, 45, 41, 0.45);
+  border: 1px solid rgba(240, 237, 228, 0.12);
+  border-radius: 16px;
+  padding: 12px;
+  box-sizing: border-box;
+}
+
+.mobile-profile-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  background: rgba(249, 238, 217, 0.08);
+  border: 1px solid rgba(249, 238, 217, 0.16);
+  border-radius: 14px;
+  text-decoration: none;
+  transition: background-color var(--duration-fast) ease, border-color var(--duration-fast) ease;
+}
+
+.mobile-profile-card:hover {
+  background: rgba(249, 238, 217, 0.14);
+  border-color: rgba(229, 169, 60, 0.4);
+}
+
+.mobile-profile-card:hover .mobile-profile-arrow {
+  color: var(--color-amber);
+  transform: translateX(2px);
+}
+
+.mobile-profile-avatar-wrap {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  flex-shrink: 0;
+}
+
+.mobile-user-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--color-amber);
+  background-color: var(--color-pine-dark);
+  box-shadow: 0 0 10px rgba(229, 169, 60, 0.25);
+  display: block;
+}
+
+.mobile-profile-status-indicator {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--color-emerald);
+  border: 2px solid #002d29;
+  box-shadow: 0 0 6px var(--color-emerald);
+}
+
+.mobile-profile-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+  gap: 2px;
+}
+
+.mobile-profile-name {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 750;
+  color: var(--color-cream);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mobile-profile-handle {
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--color-amber);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mobile-profile-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-sans);
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: #a7f3d0;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-top: 1px;
+}
+
+.mobile-profile-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: var(--color-emerald);
+  box-shadow: 0 0 5px var(--color-emerald);
+}
+
+.mobile-profile-arrow {
+  color: rgba(240, 237, 228, 0.4);
+  flex-shrink: 0;
+  transition: transform var(--duration-fast) ease, color var(--duration-fast) ease;
+}
+
+.mobile-user-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.mobile-action-create {
+  background-color: rgba(229, 169, 60, 0.12);
+  border: 1px solid rgba(229, 169, 60, 0.25);
+  color: var(--color-amber);
+}
+
+.mobile-action-create:hover {
+  background-color: rgba(229, 169, 60, 0.22);
+  color: var(--color-amber-hover);
+}
+
+.mobile-action-create.active {
+  background-color: var(--color-amber);
+  color: #1a1708;
+  font-weight: 750;
+}
+
+.mobile-action-create.active .mobile-item-icon {
+  color: #1a1708;
+}
+
+.mobile-logout-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 40px;
+  border-radius: 10px;
+  background-color: rgba(194, 94, 62, 0.1);
+  border: 1px solid rgba(194, 94, 62, 0.3);
+  color: #fca5a5;
+  font-family: var(--font-sans);
+  font-weight: 650;
+  font-size: 0.85rem;
+  cursor: pointer;
+  margin-top: 4px;
+  transition: background-color var(--duration-fast) ease, border-color var(--duration-fast) ease, color var(--duration-fast) ease;
+}
+
+.mobile-logout-btn:hover {
+  background-color: rgba(194, 94, 62, 0.22);
+  border-color: rgba(194, 94, 62, 0.55);
+  color: #fee2e2;
+}
+
+.mobile-logout-btn:active {
+  transform: scale(0.98);
 }
 
 .mobile-auth-actions {
@@ -440,29 +620,6 @@
   background-color: var(--color-amber-hover);
 }
 
-.mobile-logout-btn {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  height: 42px;
-  border-radius: 12px;
-  background-color: transparent;
-  border: 1px solid rgba(240, 237, 228, 0.25);
-  color: var(--color-cream);
-  font-family: var(--font-sans);
-  font-weight: 700;
-  font-size: 0.9rem;
-  cursor: pointer;
-  margin-top: 8px;
-  transition: background-color var(--duration-fast) ease;
-}
-
-.mobile-logout-btn:hover {
-  background-color: rgba(240, 237, 228, 0.1);
-}
-
 /* --------------------------------------------------------------------------
    Responsive Media Queries
    -------------------------------------------------------------------------- */
@@ -506,7 +663,43 @@
 
   .mobile-drawer {
     top: 58px;
-    width: calc(100vw - 20px);
-    padding: 14px 16px;
+    width: calc(100vw - 16px);
+    max-height: calc(100vh - 72px);
+    padding: 12px 14px;
+    border-radius: 16px;
+  }
+
+  .mobile-user-section {
+    padding: 10px;
+    border-radius: 14px;
+  }
+
+  .mobile-profile-card {
+    padding: 8px 10px;
+    gap: 10px;
+  }
+
+  .mobile-user-avatar {
+    width: 38px;
+    height: 38px;
+  }
+
+  .mobile-profile-avatar-wrap {
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
+  }
+
+  .mobile-profile-name {
+    font-size: 0.9rem;
+  }
+
+  .mobile-profile-handle {
+    font-size: 0.75rem;
+  }
+
+  .mobile-nav-item {
+    padding: 10px 14px;
+    font-size: 0.9rem;
   }
 }

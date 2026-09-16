@@ -1,12 +1,24 @@
 import { useEffect, useState, type FC } from "react";
-import { Link, NavLink, useLocation } from "react-router-dom";
-import { Compass, Flame, Footprints, X } from "lucide-react";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
+import {
+  Compass,
+  Flame,
+  Footprints,
+  X,
+  User as UserIcon,
+  PlusCircle,
+  LogOut,
+  ChevronRight,
+} from "lucide-react";
 import { useAuth } from "../context/AuthContext";
+import { useToast } from "../context/ToastContext";
 import { DEFAULT_AVATAR_URL, getAvatarUrl } from "../types/user";
 import "./Navbar.css";
 
 const Navbar: FC = () => {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
+  const toast = useToast();
+  const navigate = useNavigate();
   const location = useLocation();
 
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
@@ -55,6 +67,18 @@ const Navbar: FC = () => {
     }
   };
 
+  const handleMobileLogout = async () => {
+    try {
+      await logout();
+      setIsMobileOpen(false);
+      toast.success("Signed out successfully. Until your next expedition!", "Expedition Ended");
+      navigate("/");
+    } catch (err) {
+      console.error("Mobile logout error:", err);
+      toast.error("Failed to sign out. Please try again.", "Error");
+    }
+  };
+
   return (
     <header className="nav-header">
       <nav
@@ -62,7 +86,6 @@ const Navbar: FC = () => {
         aria-label="Main Navigation"
         role="navigation"
       >
-
         <Link
           to="/"
           className="navlogo-link"
@@ -223,24 +246,71 @@ const Navbar: FC = () => {
 
           {user ? (
             <div className="mobile-user-section">
-              <NavLink
+              <Link
                 to="/profile"
-                className={({ isActive }) => `mobile-nav-item ${isActive ? "active" : ""}`}
+                className="mobile-profile-card"
                 onClick={() => {
                   handleNavClick("/profile");
                   setIsMobileOpen(false);
                 }}
               >
-                <img
-                  src={getAvatarUrl(user.avatarUrl)}
-                  alt=""
-                  className="mobile-user-avatar"
-                  onError={(e) => {
-                    e.currentTarget.src = DEFAULT_AVATAR_URL;
+                <div className="mobile-profile-avatar-wrap">
+                  <img
+                    src={getAvatarUrl(user.avatarUrl)}
+                    alt={user.name || user.username}
+                    className="mobile-user-avatar"
+                    onError={(e) => {
+                      e.currentTarget.src = DEFAULT_AVATAR_URL;
+                    }}
+                  />
+                  <span className="mobile-profile-status-indicator" />
+                </div>
+                <div className="mobile-profile-info">
+                  <span className="mobile-profile-name">{user.name || "Explorer"}</span>
+                  <span className="mobile-profile-handle">@{user.username}</span>
+                  <span className="mobile-profile-badge">
+                    <span className="mobile-profile-dot" /> Active Explorer
+                  </span>
+                </div>
+                <ChevronRight size={18} className="mobile-profile-arrow" />
+              </Link>
+
+              <div className="mobile-user-actions">
+                <NavLink
+                  to="/vibes/create"
+                  className={({ isActive }) =>
+                    `mobile-nav-item mobile-action-create ${isActive ? "active" : ""}`
+                  }
+                  onClick={() => {
+                    handleNavClick("/vibes/create");
+                    setIsMobileOpen(false);
                   }}
-                />
-                <span>Profile (@{user.username})</span>
-              </NavLink>
+                >
+                  <PlusCircle size={18} className="mobile-item-icon" />
+                  <span>Spark Microadventure</span>
+                </NavLink>
+
+                <NavLink
+                  to="/profile"
+                  className={({ isActive }) => `mobile-nav-item ${isActive ? "active" : ""}`}
+                  onClick={() => {
+                    handleNavClick("/profile");
+                    setIsMobileOpen(false);
+                  }}
+                >
+                  <UserIcon size={18} className="mobile-item-icon" />
+                  <span>Explorer Passport</span>
+                </NavLink>
+
+                <button
+                  type="button"
+                  className="mobile-logout-btn"
+                  onClick={handleMobileLogout}
+                >
+                  <LogOut size={16} />
+                  <span>Sign Out</span>
+                </button>
+              </div>
             </div>
           ) : (
             <div className="mobile-auth-actions">
@@ -274,3 +344,4 @@ const Navbar: FC = () => {
 };
 
 export default Navbar;
+
