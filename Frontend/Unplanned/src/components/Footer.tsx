@@ -9,7 +9,7 @@ const Footer: FC = () => {
   return (
     <footer className="app-footer" role="contentinfo" aria-label="Unplanned Global Footer">
       <div className="app-footer-inner">
-        {/* Brand & Mission Column */}
+
         <div className="footer-brand-col">
           <Link to="/" className="footer-logo-link" aria-label="Unplanned Home">
             <span className="footer-logo-text">Unplanned</span>
@@ -26,7 +26,6 @@ const Footer: FC = () => {
           </Link>
         </div>
 
-        {/* Streamlined Navigation Links */}
         <div className="footer-nav-columns">
           <div className="footer-nav-col">
             <h4 className="footer-nav-col-title">Exploration</h4>
@@ -72,7 +71,6 @@ const Footer: FC = () => {
         </div>
       </div>
 
-      {/* Global Bottom Bar */}
       <div className="footer-bottom-bar">
         <span>&copy; {currentYear} Unplanned. All rights reserved.</span>
         <span>Built for Spontaneous Wanderers.</span>

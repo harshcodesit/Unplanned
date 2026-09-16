@@ -38,12 +38,10 @@ const Profile: FC = () => {
   const toast = useToast();
   const navigate = useNavigate();
 
-  // Primary State
   const [profile, setProfile] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [activeTab, setActiveTab] = useState<ProfileTab>("identity");
 
-  // Profile Update Form State
   const [name, setName] = useState<string>("");
   const [username, setUsername] = useState<string>("");
   const [email, setEmail] = useState<string>("");
@@ -52,7 +50,6 @@ const Profile: FC = () => {
   const [isSavingProfile, setIsSavingProfile] = useState<boolean>(false);
   const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({});
 
-  // Password Change State
   const [currentPassword, setCurrentPassword] = useState<string>("");
   const [newPassword, setNewPassword] = useState<string>("");
   const [newPassword2, setNewPassword2] = useState<string>("");
@@ -60,14 +57,12 @@ const Profile: FC = () => {
   const [showNewPw, setShowNewPw] = useState<boolean>(false);
   const [isChangingPassword, setIsChangingPassword] = useState<boolean>(false);
 
-  // Account Deletion State
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
   const [deleteConfirmationText, setDeleteConfirmationText] = useState<string>("");
   const [isDeletingAccount, setIsDeletingAccount] = useState<boolean>(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Fetch full profile with populated vibes
   const fetchProfile = async () => {
     setIsLoading(true);
     try {
@@ -91,7 +86,6 @@ const Profile: FC = () => {
     fetchProfile();
   }, []);
 
-  // Handle Avatar Selection
   const handleAvatarChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -108,7 +102,6 @@ const Profile: FC = () => {
     }
   };
 
-  // Profile Form Validation
   const validateProfileForm = () => {
     const errs: { [key: string]: string } = {};
     if (!name.trim()) errs.name = "Full name is required.";
@@ -126,7 +119,6 @@ const Profile: FC = () => {
     return Object.keys(errs).length === 0;
   };
 
-  // Submit Profile Update
   const handleUpdateProfile = async (e: FormEvent) => {
     e.preventDefault();
     if (!validateProfileForm()) {
@@ -167,7 +159,6 @@ const Profile: FC = () => {
     }
   };
 
-  // Submit Password Change
   const handleChangePassword = async (e: FormEvent) => {
     e.preventDefault();
     if (!currentPassword || !newPassword || !newPassword2) {
@@ -210,7 +201,6 @@ const Profile: FC = () => {
     }
   };
 
-  // Submit Account Deletion
   const handleDeleteAccount = async () => {
     if (deleteConfirmationText !== "DELETE") {
       toast.warning("Please type DELETE to verify account termination.", "Confirmation Required");
@@ -234,7 +224,6 @@ const Profile: FC = () => {
     }
   };
 
-  // Format date helper
   const formatDate = (dateStr?: string) => {
     if (!dateStr) return "Wanderer";
     try {
@@ -248,7 +237,6 @@ const Profile: FC = () => {
     }
   };
 
-  // Loading Skeleton State
   if (isLoading) {
     return (
       <div className="profile-container">
@@ -271,7 +259,7 @@ const Profile: FC = () => {
 
   return (
     <div className="profile-container">
-      {/* 1. Top Navigation & Action Strip */}
+
       <div className="profile-nav-bar">
         <Link to="/vibes" className="profile-back-link">
           <ArrowLeft size={16} />
@@ -291,13 +279,11 @@ const Profile: FC = () => {
         </div>
       </div>
 
-      {/* 2. Hero Explorer Passport Card (Asymmetric Silhouette) */}
       <section className="profile-passport-card" aria-label="Explorer Passport">
-        {/* Seamless Ticket Waist Notches */}
+
         <div className="profile-notch-left" aria-hidden="true" />
         <div className="profile-notch-right" aria-hidden="true" />
 
-        {/* Crown Header Tab with Negative Corners */}
         <div className="profile-passport-crown">
           <div className="profile-crown-kicker">
             <span className="profile-pulse-dot" aria-hidden="true" />
@@ -310,7 +296,7 @@ const Profile: FC = () => {
 
         <div className="profile-passport-body">
           <div className="profile-hero-split">
-            {/* Holographic Radar Avatar Capsule */}
+
             <div className="profile-avatar-capsule">
               <div className="profile-avatar-orbit-ring" aria-hidden="true" />
               <div
@@ -344,7 +330,6 @@ const Profile: FC = () => {
               </div>
             </div>
 
-            {/* Identity Bio Strip */}
             <div className="profile-identity-info">
               <span className="profile-rank-chip">Trail Pathfinder</span>
               <h1 className="profile-name">{profile?.name || "Anonymous Wanderer"}</h1>
@@ -363,7 +348,6 @@ const Profile: FC = () => {
             </div>
           </div>
 
-          {/* Aura Statistics Bar */}
           <div className="profile-aura-stats">
             <div className="profile-stat-box">
               <div className="profile-stat-icon">
@@ -388,7 +372,6 @@ const Profile: FC = () => {
         </div>
       </section>
 
-      {/* 3. Dossier Tab Switcher */}
       <nav className="profile-tabs-container" aria-label="Profile navigation tabs">
         <button
           type="button"
@@ -418,9 +401,6 @@ const Profile: FC = () => {
         </button>
       </nav>
 
-      {/* 4. Tab Panels */}
-
-      {/* TAB 1: Identity Details Form */}
       {activeTab === "identity" && (
         <div className="profile-panel">
           <div className="profile-panel-header">
@@ -434,7 +414,7 @@ const Profile: FC = () => {
           </div>
 
           <form onSubmit={handleUpdateProfile}>
-            {/* Avatar Upload Drop Zone */}
+
             <div className="profile-avatar-upload-zone">
               {currentAvatar ? (
                 <img src={currentAvatar} alt="" className="profile-avatar-preview-thumb" />
@@ -487,7 +467,6 @@ const Profile: FC = () => {
               )}
             </div>
 
-            {/* Input Grid */}
             <div className="profile-form-grid">
               <div className="profile-field-group">
                 <label className="profile-field-label">
@@ -570,7 +549,6 @@ const Profile: FC = () => {
         </div>
       )}
 
-      {/* TAB 2: Security & Keys */}
       {activeTab === "security" && (
         <div className="profile-panel">
           <div className="profile-panel-header">
@@ -681,7 +659,6 @@ const Profile: FC = () => {
         </div>
       )}
 
-      {/* TAB 3: Danger Zone */}
       {activeTab === "danger" && (
         <div className="profile-panel">
           <div className="profile-panel-header">
@@ -711,7 +688,6 @@ const Profile: FC = () => {
         </div>
       )}
 
-      {/* Account Deletion Confirmation Modal */}
       {isDeleteModalOpen && (
         <div className="profile-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-title">
           <div className="profile-modal-card">

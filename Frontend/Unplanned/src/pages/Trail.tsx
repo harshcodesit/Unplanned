@@ -72,7 +72,6 @@ const Trail: FC = () => {
     };
   }, []);
 
-  // Strict Date Formatter helper
   const formatDate = (dateStr?: string) => {
     if (!dateStr) return "Schedule Pending";
     try {
@@ -90,13 +89,12 @@ const Trail: FC = () => {
 
   return (
     <div className="trail-container">
-      {/* 1. Topographic Field Header (Asymmetric Contour Framing) */}
+
       <header className="trail-header-card" aria-label="Trail Expedition Chronicle">
-        {/* Seamless Ticket Waist Notches */}
+
         <div className="trail-notch-left" aria-hidden="true" />
         <div className="trail-notch-right" aria-hidden="true" />
 
-        {/* Crown Tab */}
         <div className="trail-header-crown">
           <div className="trail-crown-kicker">
             <span className="trail-pulse-dot" aria-hidden="true" />
@@ -107,7 +105,6 @@ const Trail: FC = () => {
           </span>
         </div>
 
-        {/* Header Body */}
         <div className="trail-header-body">
           <div className="trail-header-top-row">
             <div className="trail-header-titles">
@@ -122,7 +119,6 @@ const Trail: FC = () => {
               </p>
             </div>
 
-            {/* Quick Metrics Cards */}
             <div className="trail-metrics-strip" aria-label="Trail Summary Statistics">
               <div className="trail-metric-card">
                 <div className="trail-metric-icon-box" style={{ color: "var(--color-terracotta)" }}>
@@ -148,7 +144,6 @@ const Trail: FC = () => {
         </div>
       </header>
 
-      {/* 2. Chronicle Segment Switcher & Quick Actions */}
       <nav className="trail-tabs-bar" aria-label="Filter trail sections">
         <div className="trail-segment-pills" role="tablist">
           <button
@@ -182,7 +177,6 @@ const Trail: FC = () => {
         </Link>
       </nav>
 
-      {/* Loading Skeletons */}
       {isLoading && (
         <div className="trail-cards-grid" aria-label="Loading trail data">
           {[1, 2, 3].map((n) => (
@@ -208,10 +202,9 @@ const Trail: FC = () => {
         </div>
       )}
 
-      {/* Main Content Sections */}
       {!isLoading && (
         <>
-          {/* SECTION 1: Sparks Hosted */}
+
           {activeFilter === "sparks" && (
             <section className="trail-section" aria-labelledby="sparks-heading">
               <div className="trail-section-header">
@@ -239,11 +232,10 @@ const Trail: FC = () => {
 
                     return (
                       <article key={spark._id} className="trail-card">
-                        {/* Seamless Card Waist Notches */}
+
                         <div className="trail-card-notch-l" aria-hidden="true" />
                         <div className="trail-card-notch-r" aria-hidden="true" />
 
-                        {/* Top Thumbnail Banner */}
                         <div className="trail-card-banner">
                           {hasImage ? (
                             <img
@@ -265,7 +257,6 @@ const Trail: FC = () => {
                           </div>
                         </div>
 
-                        {/* Card Body */}
                         <div className="trail-card-body">
                           <div className="trail-card-date-badge">
                             <Calendar size={13} style={{ color: "var(--color-amber)" }} />
@@ -275,7 +266,6 @@ const Trail: FC = () => {
                           <h3 className="trail-card-title">{spark.title}</h3>
                           <p className="trail-card-desc">{spark.description}</p>
 
-                          {/* Real Metadata Fields */}
                           <div className="trail-card-meta-list">
                             <div className="trail-card-meta-item">
                               <MapPin size={13} style={{ color: "var(--color-amber)", flexShrink: 0 }} />
@@ -285,7 +275,6 @@ const Trail: FC = () => {
                             </div>
                           </div>
 
-                          {/* Real Participants Stack */}
                           <div className="trail-participants-strip">
                             <div className="trail-avatar-stack">
                                 {spark.participants && spark.participants.length > 0 ? (
@@ -312,7 +301,6 @@ const Trail: FC = () => {
                           </div>
                         </div>
 
-                        {/* Action Footer */}
                         <div className="trail-card-footer">
                           <Link to={`/vibes/${spark._id}`} className="trail-view-btn">
                             <span>View Spark Details</span>

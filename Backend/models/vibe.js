@@ -31,7 +31,7 @@ const VibeSchema = new mongoose.Schema(
         required: true,
       },
       coordinates: {
-        type: [Number], // [longitude, latitude]
+        type: [Number],
         required: true,
       },
     },

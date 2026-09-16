@@ -40,18 +40,16 @@ const ToastContainer: FC<ToastContainerProps> = ({ toasts, onDismiss }) => {
             className={`toast-item ${toast.type}`}
             role={toast.type === "error" ? "alert" : "status"}
           >
-            {/* Icon Orb */}
+
             <div className="toast-icon-box" aria-hidden="true">
               {getToastIcon(toast.type)}
             </div>
 
-            {/* Content: Title & Message */}
             <div className="toast-content">
               {toast.title && <h4 className="toast-title">{toast.title}</h4>}
               <p className="toast-message">{toast.message}</p>
             </div>
 
-            {/* Dismiss Close Button */}
             <button
               type="button"
               className="toast-dismiss-btn"
@@ -61,7 +59,6 @@ const ToastContainer: FC<ToastContainerProps> = ({ toasts, onDismiss }) => {
               <X size={16} />
             </button>
 
-            {/* Auto-Dismiss Countdown Progress Bar */}
             {duration > 0 && (
               <div
                 className="toast-progress"

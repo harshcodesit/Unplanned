@@ -66,7 +66,7 @@ const sendJoinRequest = async (req, res) => {
   } catch (err) {
     console.error("Error sending join request:", err);
 
-    // Duplicate key safeguard (e.g. unique compound index on { vibe, requester })
+
     if (err.code === 11000) {
       return res.status(400).json({
         errors: [{ msg: "You have already sent a request to join this Vibe." }],

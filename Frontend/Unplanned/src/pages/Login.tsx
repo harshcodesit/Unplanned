@@ -50,16 +50,13 @@ const Login: FC = () => {
   const { user, loading, login } = useAuth();
   const toast = useToast();
 
-  // Form input values
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
 
-  // UI state
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [alert, setAlert] = useState<AlertState | null>(null);
 
-  // Compute return URL for deep linking after auth
   const locationState = location.state as LocationStateWithFrom | null;
   let targetReturnUrl = "/";
   if (locationState?.from) {
@@ -70,7 +67,6 @@ const Login: FC = () => {
     }
   }
 
-  // If already logged in, redirect straight to profile page
   if (!loading && user) {
     return <Navigate to="/profile" replace />;
   }
@@ -98,7 +94,6 @@ const Login: FC = () => {
 
     const trimmedIdentifier = identifier.trim();
 
-    // Client-side validations
     if (!trimmedIdentifier) {
       const msg = "Please enter your email address or username.";
       setAlert({
@@ -124,7 +119,7 @@ const Login: FC = () => {
     setIsLoading(true);
 
     try {
-      // Intelligently route identifier to email or username field based on '@' presence
+
       const isEmail = trimmedIdentifier.includes("@");
       const payload = {
         email: isEmail ? trimmedIdentifier.toLowerCase() : undefined,
@@ -135,11 +130,10 @@ const Login: FC = () => {
       const response = await API.post<LoginResponse>("/user/login", payload);
 
       if (response.data.success) {
-        // Trigger global persistent toast that survives route redirect
+
         const successMessage = response.data.message || "Logged in successfully! Welcome back.";
         toast.success(successMessage, "Access Granted");
 
-        // Sync authenticated user in global context
         const authenticatedUser: User = {
           _id: response.data.user.id,
           name: response.data.user.name,
@@ -149,7 +143,6 @@ const Login: FC = () => {
         };
         login(authenticatedUser);
 
-        // Immediate redirection: toast stays visible seamlessly on destination page
         navigate(targetReturnUrl, { replace: true });
       }
     } catch (err: unknown) {
@@ -202,11 +195,10 @@ const Login: FC = () => {
   return (
     <div className="login-page-container">
       <div className="login-card" role="region" aria-labelledby="login-heading">
-        {/* Ticket-Style Semicircular Waist Cutout Notches (Seamless Arch Geometry) */}
+
         <div className="login-card-notch-left" aria-hidden="true" />
         <div className="login-card-notch-right" aria-hidden="true" />
 
-        {/* Notched Top Header with Inverted Negative-Radius Scoop */}
         <div className="login-notched-header">
           <div className="login-kicker-group">
             <KeyRound size={15} className="login-kicker-icon" />
@@ -216,7 +208,7 @@ const Login: FC = () => {
         </div>
 
         <div className="login-body">
-          {/* Header Title Block */}
+
           <div className="login-title-block">
             <h1 id="login-heading" className="login-title">
               Welcome Back
@@ -226,7 +218,6 @@ const Login: FC = () => {
             </p>
           </div>
 
-          {/* Integrated Alert Banner */}
           {alert && (
             <div
               className={`login-alert ${alert.type}`}
@@ -263,9 +254,8 @@ const Login: FC = () => {
             </div>
           )}
 
-          {/* Form */}
           <form className="login-form" onSubmit={handleSubmit} noValidate>
-            {/* Email or Username */}
+
             <div className="login-field">
               <label htmlFor="login-identifier" className="login-label">
                 Email or Username
@@ -291,7 +281,6 @@ const Login: FC = () => {
               </div>
             </div>
 
-            {/* Password */}
             <div className="login-field">
               <div className="login-label-row">
                 <label htmlFor="login-password" className="login-label">
@@ -331,7 +320,6 @@ const Login: FC = () => {
               </div>
             </div>
 
-            {/* Submit CTA Button */}
             <button
               type="submit"
               className="login-submit-btn"
@@ -352,7 +340,6 @@ const Login: FC = () => {
             </button>
           </form>
 
-          {/* Footer Switch to Sign Up */}
           <div className="login-footer-switch">
             <span>Don't have a Wanderer passport yet?</span>
             <Link to="/register" state={location.state} className="login-switch-link">

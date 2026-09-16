@@ -74,7 +74,6 @@ const VibeDetails: FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  // Join request state
   const [isJoining, setIsJoining] = useState<boolean>(false);
   const [hasRequested, setHasRequested] = useState<boolean>(false);
   const [userRequest, setUserRequest] = useState<{
@@ -82,11 +81,9 @@ const VibeDetails: FC = () => {
     requestedAt?: string;
   } | null>(null);
 
-  // Host clearance: incoming requests
   const [requests, setRequests] = useState<JoinRequestItem[]>([]);
   const [isLoadingRequests, setIsLoadingRequests] = useState<boolean>(false);
 
-  // Fetch Vibe Details
   const fetchVibeDetails = async () => {
     if (!id) return;
     setIsLoading(true);
@@ -119,7 +116,6 @@ const VibeDetails: FC = () => {
     }
   };
 
-  // Fetch incoming join requests (if host)
   const fetchHostRequests = async () => {
     if (!id || !user || !vibe || vibe.creator._id !== user._id) return;
     setIsLoadingRequests(true);
@@ -145,7 +141,6 @@ const VibeDetails: FC = () => {
     }
   }, [vibe, user]);
 
-  // Request to Join
   const handleRequestJoin = async () => {
     if (!user) {
       toast.warning("Please sign in or create an account to join microadventures.", "Sign In Required");
@@ -188,7 +183,6 @@ const VibeDetails: FC = () => {
     }
   };
 
-  // Host: Approve request
   const handleAcceptRequest = async (requestId: string) => {
     if (!id) return;
     try {
@@ -202,7 +196,7 @@ const VibeDetails: FC = () => {
       }>(`/vibes/${id}/request/${requestId}/accept`);
       if (res.data.success) {
         toast.success("Wanderer approved! They now have clearance and coordinates.", "Request Approved");
-        // Update local requests list
+
         setRequests((prev) =>
           prev.map((r) => (r._id === requestId ? { ...r, status: "accepted" as const } : r))
         );
@@ -215,7 +209,7 @@ const VibeDetails: FC = () => {
         if (res.data.showActualLocation !== undefined) {
           setShowActualLocation(Boolean(res.data.showActualLocation));
         }
-        // Refresh vibe to update participants list and confirmed attendees
+
         fetchVibeDetails();
       }
     } catch (err) {
@@ -224,7 +218,6 @@ const VibeDetails: FC = () => {
     }
   };
 
-  // Host: Decline request
   const handleRejectRequest = async (requestId: string) => {
     if (!id) return;
     try {
@@ -241,7 +234,6 @@ const VibeDetails: FC = () => {
     }
   };
 
-  // Host: Close vibe
   const [isClosingVibe, setIsClosingVibe] = useState(false);
 
   const handleCloseVibe = async () => {
@@ -267,7 +259,6 @@ const VibeDetails: FC = () => {
     }
   };
 
-  // Host: Delete vibe
   const handleDeleteVibe = async () => {
     if (!id) return;
     if (!window.confirm("Are you sure you want to permanently cancel and remove this microadventure?")) {
@@ -299,7 +290,6 @@ const VibeDetails: FC = () => {
     }
   };
 
-  // Format date helper
   const formatDateTime = (dateStr: string) => {
     try {
       const d = new Date(dateStr);
@@ -316,7 +306,6 @@ const VibeDetails: FC = () => {
     }
   };
 
-  // Loading skeleton
   if (isLoading) {
     return (
       <div className="vibe-details-container">
@@ -328,7 +317,6 @@ const VibeDetails: FC = () => {
     );
   }
 
-  // Not Found / Error Fallback
   if (errorMsg || !vibe) {
     return (
       <div className="vibe-details-container">
@@ -366,7 +354,6 @@ const VibeDetails: FC = () => {
   const pendingRequests = requests.filter((r) => r.status === "pending");
   const hasPhotos = vibe.image && vibe.image.length > 0;
 
-  // Auto-expiration check: if endDate has passed, vibe is automatically closed
   const isTimeExpired = Boolean(vibe.endDate && new Date(vibe.endDate).getTime() < Date.now());
   const effectiveStatus = isTimeExpired || vibe.status?.toLowerCase() === "closed" ? "Closed" : vibe.status || "Open";
   const isVibeClosed = effectiveStatus === "Closed";
@@ -382,7 +369,7 @@ const VibeDetails: FC = () => {
 
   return (
     <div className="vibe-details-container">
-      {/* 1. Top Navigation Bar */}
+
       <div className="details-nav-bar">
         <Link to="/vibes" className="details-back-link">
           <ArrowLeft size={16} />
@@ -404,15 +391,13 @@ const VibeDetails: FC = () => {
         </div>
       </div>
 
-      {/* 2. Main Two-Column Layout */}
       <div className="details-grid">
-        {/* Left Column: Field Ticket Dossier */}
+
         <article className="details-dossier-card">
-          {/* Seamless Ticket Waist Notches */}
+
           <div className="details-notch-left" aria-hidden="true" />
           <div className="details-notch-right" aria-hidden="true" />
 
-          {/* Notched Crown Header Tab */}
           <div className="details-notched-header">
             <div className="details-kicker-group">
               <Radio size={15} className="details-kicker-icon" />
@@ -422,12 +407,11 @@ const VibeDetails: FC = () => {
           </div>
 
           <div className="details-body">
-            {/* Title Block */}
+
             <div className="details-title-block">
               <h1 className="details-title">{vibe.title}</h1>
             </div>
 
-            {/* Key Metadata Strip */}
             <div className="details-key-meta">
               <div className="details-meta-item">
                 <MapPin size={18} className="details-meta-icon" />
@@ -464,7 +448,6 @@ const VibeDetails: FC = () => {
               )}
             </div>
 
-            {/* Photo Showcase Gallery */}
             {hasPhotos && (
               <div className="details-gallery">
                 <div className="details-gallery-primary">
@@ -493,16 +476,13 @@ const VibeDetails: FC = () => {
               </div>
             )}
 
-            {/* Full Plan Description */}
             <div className="details-description-section">
               <h2 className="details-section-title">The Plan & Wanderer Guide</h2>
               <p className="details-description-text">{vibe.description}</p>
             </div>
 
-            {/* Perforation Divider Line */}
             <div className="details-perforation" aria-hidden="true" />
 
-            {/* Trail Host Profile */}
             <div className="details-host-card">
               <div className="details-host-left">
                 <img
@@ -546,7 +526,6 @@ const VibeDetails: FC = () => {
               )}
             </div>
 
-            {/* Attendees Roster */}
             <div className="details-attendees-section">
               <h2 className="details-section-title" style={{ fontSize: "1rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
                 <Users size={16} style={{ color: "var(--color-pine)" }} />
@@ -576,12 +555,11 @@ const VibeDetails: FC = () => {
               )}
             </div>
 
-            {/* Action Hub */}
             <div className="details-action-hub">
               {isHost ? (
-                /* Host Clearance Management Panel */
+
                 <div className="details-host-panel">
-                  {/* Sub-Panel 1: Pending Requests */}
+
                   <div className="details-host-subpanel">
                     <div className="details-host-panel-header">
                       <h3 style={{ fontSize: "0.95rem", fontWeight: 800, color: "var(--color-pine)", margin: 0, display: "flex", alignItems: "center", gap: "0.45rem" }}>
@@ -639,7 +617,6 @@ const VibeDetails: FC = () => {
                     )}
                   </div>
 
-                  {/* Sub-Panel 2: Dedicated Confirmed Attendees List */}
                   <div className="details-host-subpanel" style={{ marginTop: "1.25rem", paddingTop: "1.25rem", borderTop: "1.5px solid rgba(0, 71, 65, 0.1)" }}>
                     <div className="details-host-panel-header">
                       <h3 style={{ fontSize: "0.95rem", fontWeight: 800, color: "var(--color-pine)", margin: 0, display: "flex", alignItems: "center", gap: "0.45rem" }}>
@@ -685,7 +662,7 @@ const VibeDetails: FC = () => {
                   </div>
                 </div>
               ) : isParticipant ? (
-                /* Attending Banner */
+
                 <div className="details-attending-banner">
                   <UserCheck size={20} />
                   <span>You're approved for this microadventure! See you at the rendezvous spot.</span>

@@ -1,4 +1,4 @@
-// routes/vibeRoute.js
+
 const express = require("express");
 const router = express.Router();
 const { verifyToken, optionalVerifyToken } = require("../middlewares/jwt.js");

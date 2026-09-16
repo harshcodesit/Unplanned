@@ -1,4 +1,4 @@
-// src/types/vibe.ts
+
 
 export interface VibeUserRef {
   _id: string;
@@ -15,7 +15,7 @@ export interface VibeImage {
 
 export interface VibeGeometry {
   type: "Point";
-  coordinates: [number, number]; // [longitude, latitude]
+  coordinates: [number, number];
 }
 
 export type VibeStatus = "Open" | "Full" | "Completed" | "Cancelled" | "Closed" | "closed";

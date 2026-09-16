@@ -14,7 +14,7 @@ export interface ToastOptions {
   type?: ToastType;
   title?: string;
   message: string;
-  duration?: number; // In milliseconds, default 4000ms
+  duration?: number;
 }
 
 export interface ToastItem extends ToastOptions {
@@ -63,7 +63,7 @@ export const ToastProvider: FC<{ children: ReactNode }> = ({ children }) => {
         createdAt: Date.now(),
       };
 
-      setToasts((prev) => [newToast, ...prev.slice(0, 4)]); // Keep at most 5 toasts stacked
+      setToasts((prev) => [newToast, ...prev.slice(0, 4)]);
 
       if (duration > 0) {
         setTimeout(() => {
@@ -114,14 +114,12 @@ export const ToastProvider: FC<{ children: ReactNode }> = ({ children }) => {
       }}
     >
       {children}
-      {/* Global Toast Container persists above all routes and survives navigation */}
+
       <ToastContainer toasts={toasts} onDismiss={remove} />
     </ToastContext.Provider>
   );
 };
 
-// Custom Hook to consume Toast API anywhere in the app
-// eslint-disable-next-line react-refresh/only-export-components
 export const useToast = (): ToastContextType => {
   const context = useContext(ToastContext);
   if (!context) {

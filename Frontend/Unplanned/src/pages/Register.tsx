@@ -53,7 +53,6 @@ const Register: FC = () => {
   const { user, loading, login } = useAuth();
   const toast = useToast();
 
-  // Compute return URL for deep linking after auth
   const locationState = location.state as LocationStateWithFrom | null;
   let targetReturnUrl = "/";
   if (locationState?.from) {
@@ -64,12 +63,10 @@ const Register: FC = () => {
     }
   }
 
-  // If already logged in, redirect straight to profile page
   if (!loading && user) {
     return <Navigate to="/profile" replace />;
   }
 
-  // Form input values
   const [formData, setFormData] = useState({
     name: "",
     username: "",
@@ -78,14 +75,12 @@ const Register: FC = () => {
     confirmPassword: "",
   });
 
-  // UI state
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [alert, setAlert] = useState<AlertState | null>(null);
 
-  // Field validation checks for real-time guidance
   const usernameRegex = /^[a-zA-Z0-9_]{3,20}$/;
   const isUsernameValid =
     formData.username.length === 0 || usernameRegex.test(formData.username);
@@ -98,7 +93,7 @@ const Register: FC = () => {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    // Clear alert when user starts typing again
+
     if (alert) setAlert(null);
   };
 
@@ -106,7 +101,6 @@ const Register: FC = () => {
     e.preventDefault();
     setAlert(null);
 
-    // Client-side pre-validations matching backend rules
     const clientErrors: string[] = [];
 
     if (!formData.name.trim()) clientErrors.push("Please enter your full name.");
@@ -154,12 +148,11 @@ const Register: FC = () => {
 
       if (response.data.success) {
         setIsSuccess(true);
-        // Trigger global toast that persists across route redirect
+
         const successMessage =
           response.data.message || "User registered successfully! Welcome to Unplanned.";
         toast.success(successMessage, "Registration Successful");
 
-        // Sync authenticated user in global context
         const registeredUser: User = {
           _id: response.data.user.id,
           name: response.data.user.name,
@@ -169,7 +162,6 @@ const Register: FC = () => {
         };
         login(registeredUser);
 
-        // Redirect user immediately: the global toast remains visible on the destination page
         navigate(targetReturnUrl, { replace: true });
       }
     } catch (err: unknown) {
@@ -220,11 +212,10 @@ const Register: FC = () => {
   return (
     <div className="register-page-container">
       <div className="register-card" role="region" aria-labelledby="register-heading">
-        {/* Ticket-Style Semicircular Waist Cutout Notches */}
+
         <div className="register-card-notch-left" aria-hidden="true" />
         <div className="register-card-notch-right" aria-hidden="true" />
 
-        {/* Notched Top Header with Negative Radius Scoop */}
         <div className="register-notched-header">
           <div className="register-kicker-group">
             <Sparkles size={15} className="register-kicker-icon" />
@@ -234,7 +225,7 @@ const Register: FC = () => {
         </div>
 
         <div className="register-body">
-          {/* Header Title Block */}
+
           <div className="register-title-block">
             <h1 id="register-heading" className="register-title">
               Begin Your Journey
@@ -245,7 +236,6 @@ const Register: FC = () => {
             </p>
           </div>
 
-          {/* Integrated Notification Alert (Backend Errors or Success Feedback) */}
           {alert && (
             <div
               className={`register-alert ${alert.type}`}
@@ -282,14 +272,13 @@ const Register: FC = () => {
             </div>
           )}
 
-          {/* Registration Form */}
           <form
             onSubmit={handleSubmit}
             className="register-form"
             noValidate
             aria-busy={isLoading}
           >
-            {/* 1. Full Name */}
+
             <div className="register-field">
               <label htmlFor="reg-name" className="register-label">
                 <span>Full Name</span>
@@ -311,7 +300,6 @@ const Register: FC = () => {
               </div>
             </div>
 
-            {/* 2. Username */}
             <div className="register-field">
               <label htmlFor="reg-username" className="register-label">
                 <span>Username</span>
@@ -343,7 +331,6 @@ const Register: FC = () => {
               )}
             </div>
 
-            {/* 3. Email Address */}
             <div className="register-field">
               <label htmlFor="reg-email" className="register-label">
                 <span>Email Address</span>
@@ -365,7 +352,6 @@ const Register: FC = () => {
               </div>
             </div>
 
-            {/* 4. Password */}
             <div className="register-field">
               <label htmlFor="reg-password" className="register-label">
                 <span>Password</span>
@@ -403,7 +389,6 @@ const Register: FC = () => {
               )}
             </div>
 
-            {/* 5. Confirm Password */}
             <div className="register-field">
               <label htmlFor="reg-confirm-password" className="register-label">
                 <span>Confirm Password</span>
@@ -442,7 +427,6 @@ const Register: FC = () => {
               ) : null}
             </div>
 
-            {/* Submit Action Button with Loading and Success Feedback */}
             <button
               type="submit"
               disabled={isLoading || isSuccess}
@@ -468,7 +452,6 @@ const Register: FC = () => {
             </button>
           </form>
 
-          {/* Switch to Login Link */}
           <div className="register-footer-switch">
             <span>Already have an explorer account?</span>
             <Link to="/login" state={location.state} className="register-switch-link">

@@ -47,7 +47,6 @@ const VibesFeed: FC = () => {
     fetchVibes();
   }, []);
 
-  // Format date helper: "Today at 6:30 PM", "Tomorrow at 2:00 PM", or "Sep 18 at 4:00 PM"
   const formatVibeTime = (dateString: string) => {
     try {
       const d = new Date(dateString);
@@ -81,7 +80,6 @@ const VibesFeed: FC = () => {
     }
   };
 
-  // Filtering
   const filteredVibes = vibes.filter((vibe) => {
     const q = searchQuery.toLowerCase().trim();
     const matchesQuery =
@@ -112,7 +110,7 @@ const VibesFeed: FC = () => {
 
   return (
     <div className="vibes-feed-container">
-      {/* 1. Radar Canopy Header */}
+
       <section className="radar-canopy" aria-labelledby="radar-heading">
         <div className="radar-header-top">
           <div className="radar-status-badge">
@@ -139,7 +137,6 @@ const VibesFeed: FC = () => {
         </div>
       </section>
 
-      {/* 2. Search & Filter Bar */}
       <div className="feed-controls-bar">
         <div className="feed-search-wrap">
           <Search size={18} className="feed-search-icon" aria-hidden="true" />
@@ -176,7 +173,6 @@ const VibesFeed: FC = () => {
         </div>
       </div>
 
-      {/* 3. Feed Cards Grid / Skeletons / Empty State */}
       {isLoading ? (
         <div className="vibes-grid" aria-label="Loading microadventures">
           {[1, 2, 3].map((n) => (
@@ -189,7 +185,7 @@ const VibesFeed: FC = () => {
           ))}
         </div>
       ) : filteredVibes.length === 0 ? (
-        /* Empty State */
+
         <div className="vibes-empty-state">
           <div className="empty-radar-orb">
             <Radio size={36} />
@@ -206,7 +202,7 @@ const VibesFeed: FC = () => {
           </Link>
         </div>
       ) : (
-        /* Vibe Cards */
+
         <div className="vibes-grid">
           {filteredVibes.map((vibe) => {
             const isHost = user && vibe.creator && vibe.creator._id === user._id;
@@ -218,11 +214,10 @@ const VibesFeed: FC = () => {
 
             return (
               <article key={vibe._id} className="vibe-ticket-card">
-                {/* Seamless Ticket Waist Notches */}
+
                 <div className="vibe-ticket-notch-left" aria-hidden="true" />
                 <div className="vibe-ticket-notch-right" aria-hidden="true" />
 
-                {/* Notched Top Crown Tab */}
                 <div className="vibe-ticket-header">
                   <div className="vibe-ticket-kicker">
                     <Radio size={13} />
@@ -237,9 +232,8 @@ const VibesFeed: FC = () => {
                   })()}
                 </div>
 
-                {/* Card Body */}
                 <div className="vibe-ticket-body">
-                  {/* Photo Banner if uploaded */}
+
                   {hasImages && (
                     <div className="vibe-photo-banner">
                       <img
@@ -261,7 +255,6 @@ const VibesFeed: FC = () => {
                   </Link>
                   <p className="vibe-card-desc">{vibe.description}</p>
 
-                  {/* Metadata: Location & Time */}
                   <div className="vibe-meta-row">
                     <div className="vibe-meta-item">
                       <MapPin size={15} className="vibe-meta-icon" />
@@ -287,13 +280,11 @@ const VibesFeed: FC = () => {
                     )}
                   </div>
 
-                  {/* Perforation Divider Line */}
                   <div className="vibe-ticket-perforation" aria-hidden="true" />
                 </div>
 
-                {/* Card Footer: Host & View Details */}
                 <div className="vibe-ticket-footer">
-                  {/* Host Slot */}
+
                   <div className="vibe-host-slot">
                     <img
                       src={getAvatarUrl(vibe.creator?.avatarUrl)}
@@ -311,7 +302,6 @@ const VibesFeed: FC = () => {
                     </div>
                   </div>
 
-                  {/* Dedicated View Details Button on every card */}
                   <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
                     {isHost && <span className="vibe-host-badge">Your Spark</span>}
                     {isParticipant && (
@@ -332,7 +322,6 @@ const VibesFeed: FC = () => {
         </div>
       )}
 
-      {/* 4. Floating Action Button (FAB) for seamless vibe creation */}
       <Link to="/vibes/create" className="feed-fab" aria-label="Broadcast Microadventure">
         <Plus size={20} />
         <span>Broadcast Vibe</span>

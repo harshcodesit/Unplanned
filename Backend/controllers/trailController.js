@@ -13,7 +13,7 @@ const getHostedVibes = async (req, res) => {
         path: "participants",
         select: "name username avatarUrl",
       },
-      options: { sort: { startDate: -1 } }, // Sort hosted vibes newest first
+      options: { sort: { startDate: -1 } },
     });
 
     if (!currentUser) {
@@ -45,7 +45,7 @@ const getJoinedVibes = async (req, res) => {
         path: "creator",
         select: "name username avatarUrl",
       },
-      options: { sort: { startDate: -1 } }, // Sort joined vibes newest first
+      options: { sort: { startDate: -1 } },
     });
 
     if (!currentUser) {

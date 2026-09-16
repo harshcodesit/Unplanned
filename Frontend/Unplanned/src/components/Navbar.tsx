@@ -12,7 +12,6 @@ const Navbar: FC = () => {
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
   const [isMobileOpen, setIsMobileOpen] = useState<boolean>(false);
 
-  // Scroll awareness for sticky canopy depth
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 15);
@@ -24,12 +23,10 @@ const Navbar: FC = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Close mobile drawer on route change
   useEffect(() => {
     setIsMobileOpen(false);
   }, [location.pathname]);
 
-  // Close on ESC key
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape" && isMobileOpen) {
@@ -41,7 +38,6 @@ const Navbar: FC = () => {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isMobileOpen]);
 
-  // Lock body scroll when mobile menu is open
   useEffect(() => {
     if (isMobileOpen) {
       document.body.style.overflow = "hidden";
@@ -53,7 +49,6 @@ const Navbar: FC = () => {
     };
   }, [isMobileOpen]);
 
-  // Smooth scroll to top when already on target tab
   const handleNavClick = (targetPath: string) => {
     if (location.pathname === targetPath) {
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -67,7 +62,7 @@ const Navbar: FC = () => {
         aria-label="Main Navigation"
         role="navigation"
       >
-        {/* Brand Identity with Amber Spark Accent */}
+
         <Link
           to="/"
           className="navlogo-link"
@@ -77,7 +72,6 @@ const Navbar: FC = () => {
           <span className="navlogo">Unplanned</span>
         </Link>
 
-        {/* Desktop Navigation Links */}
         <div className="navlinks desktop-nav" role="menubar">
           <NavLink
             to="/"
@@ -107,7 +101,6 @@ const Navbar: FC = () => {
             <span>Trail</span>
           </NavLink>
 
-          {/* Dynamic Profile / Auth Slot */}
           {user ? (
             <div className="nav-user-slot">
               <NavLink
@@ -151,7 +144,6 @@ const Navbar: FC = () => {
           )}
         </div>
 
-        {/* Mobile Hamburger / Close Toggle Button */}
         <button
           type="button"
           className={`nav-mobile-toggle ${isMobileOpen ? "open" : ""}`}
@@ -172,7 +164,6 @@ const Navbar: FC = () => {
         </button>
       </nav>
 
-      {/* Mobile Drawer Overlay */}
       {isMobileOpen && (
         <div
           className="mobile-backdrop"
@@ -181,7 +172,6 @@ const Navbar: FC = () => {
         />
       )}
 
-      {/* Mobile Navigation Drawer */}
       <div
         id="mobile-nav-drawer"
         className={`mobile-drawer ${isMobileOpen ? "open" : ""}`}
@@ -231,7 +221,6 @@ const Navbar: FC = () => {
 
           <div className="mobile-drawer-divider" />
 
-          {/* Mobile Auth Slot */}
           {user ? (
             <div className="mobile-user-section">
               <NavLink

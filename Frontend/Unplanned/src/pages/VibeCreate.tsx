@@ -42,7 +42,6 @@ const VibeCreate: FC = () => {
   const toast = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Calculate default start date: 2 hours from now formatted for datetime-local
   const getDefaultStartDate = () => {
     const d = new Date(Date.now() + 2 * 60 * 60 * 1000);
     d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
@@ -63,7 +62,6 @@ const VibeCreate: FC = () => {
   const [isDetectingLocation, setIsDetectingLocation] = useState(false);
   const [alert, setAlert] = useState<AlertState | null>(null);
 
-  // Quick GPS detection
   const handleDetectLocation = () => {
     if (!navigator.geolocation) {
       toast.warning("Geolocation is not supported by your browser.", "Location Notice");
@@ -101,7 +99,6 @@ const VibeCreate: FC = () => {
     }
   };
 
-  // Image handling
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
     const selectedFiles = Array.from(e.target.files);
@@ -114,7 +111,6 @@ const VibeCreate: FC = () => {
     const newFiles = [...images, ...selectedFiles].slice(0, 5);
     setImages(newFiles);
 
-    // Generate previews
     const newPreviews = newFiles.map((file) => URL.createObjectURL(file));
     setPreviewUrls(newPreviews);
   };
@@ -130,7 +126,6 @@ const VibeCreate: FC = () => {
     e.preventDefault();
     setAlert(null);
 
-    // Client-side validations matching backend
     const errors: string[] = [];
 
     if (!title.trim()) {
@@ -248,11 +243,10 @@ const VibeCreate: FC = () => {
   return (
     <div className="vibe-create-container">
       <div className="vibe-create-card" role="region" aria-labelledby="vibe-create-heading">
-        {/* Seamless Ticket Waist Notches */}
+
         <div className="vibe-create-notch-left" aria-hidden="true" />
         <div className="vibe-create-notch-right" aria-hidden="true" />
 
-        {/* Notched Top Header Tab */}
         <div className="vibe-create-header">
           <div className="vibe-create-kicker-group">
             <Radio size={15} className="vibe-create-kicker-icon" />
@@ -262,7 +256,7 @@ const VibeCreate: FC = () => {
         </div>
 
         <div className="vibe-create-body">
-          {/* Header Title Block */}
+
           <div className="vibe-create-title-block">
             <h1 id="vibe-create-heading" className="vibe-create-title">
               Broadcast Microadventure
@@ -273,7 +267,6 @@ const VibeCreate: FC = () => {
             </p>
           </div>
 
-          {/* Integrated Alert Banner */}
           {alert && (
             <div className={`vibe-create-alert ${alert.type}`} role="alert">
               <div className="vibe-create-alert-icon">
@@ -302,9 +295,8 @@ const VibeCreate: FC = () => {
             </div>
           )}
 
-          {/* Form */}
           <form className="vibe-create-form" onSubmit={handleSubmit} noValidate>
-            {/* Title */}
+
             <div className="vibe-field-group">
               <label htmlFor="vibe-title" className="vibe-field-label">
                 <span>Vibe Title *</span>
@@ -325,7 +317,6 @@ const VibeCreate: FC = () => {
               </div>
             </div>
 
-            {/* Description */}
             <div className="vibe-field-group">
               <label htmlFor="vibe-description" className="vibe-field-label">
                 <span>What's the plan? *</span>

@@ -3,7 +3,7 @@ const User = require("../models/user.js");
 const Request = require("../models/request.js");
 
 function getBlurredCoordinates(longitude, latitude, radiusKm = 1) {
-  const R = 6371; // Earth's radius in kilometers
+  const R = 6371;
   const latRad = (latitude * Math.PI) / 180;
   const lonRad = (longitude * Math.PI) / 180;
 
@@ -53,7 +53,7 @@ const getAllVibes = async (req, res) => {
 
     const now = new Date();
     const vibesForDisplay = vibes.map((vibe) => {
-      // Auto-transition to Closed if past endDate
+
       if (vibe.endDate && new Date(vibe.endDate) < now && vibe.status === "Open") {
         vibe.status = "Closed";
         vibe.save().catch((e) => console.error("Auto-close error in getAllVibes:", e));
@@ -110,7 +110,7 @@ const createVibe = async (req, res) => {
       endDate,
     } = req.body;
 
-    // Validation
+
     let errors = [];
     if (!title || !description || !latitude || !longitude || !startDate) {
       errors.push({ msg: "Please fill in all required fields." });
@@ -187,7 +187,7 @@ const getVibeById = async (req, res) => {
       return res.status(404).json({ errors: [{ msg: "Vibe not found." }] });
     }
 
-    // Automatic expiration: if end time has passed and status is Open, transition to Closed
+
     if (vibe.endDate && new Date(vibe.endDate) < new Date() && vibe.status === "Open") {
       vibe.status = "Closed";
       await vibe.save();
@@ -197,14 +197,14 @@ const getVibeById = async (req, res) => {
     let userRequest = null;
 
     if (currentUserId) {
-      // 1. Is the user the vibe creator / host?
+
       const isCreator = Boolean(
         vibe.creator &&
           (vibe.creator._id.equals(currentUserId) ||
             vibe.creator._id.toString() === currentUserId.toString())
       );
 
-      // 2. Is the user an approved participant in the participants list?
+
       const isParticipant = Boolean(
         vibe.participants &&
           vibe.participants.some((p) => {
@@ -213,7 +213,7 @@ const getVibeById = async (req, res) => {
           })
       );
 
-      // 3. Check user's join request status in Request collection
+
       userRequest = await Request.findOne({
         vibe: vibe._id,
         requester: currentUserId,
@@ -283,7 +283,7 @@ const updateVibe = async (req, res) => {
       return res.status(404).json({ errors: [{ msg: "Vibe not found." }] });
     }
 
-    // Ownership Authorization
+
     if (!vibe.creator.equals(userId)) {
       return res.status(403).json({ errors: [{ msg: "Not authorized to update this vibe." }] });
     }

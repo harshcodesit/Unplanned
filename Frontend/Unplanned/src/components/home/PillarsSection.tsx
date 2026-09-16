@@ -65,11 +65,10 @@ const PillarsSection: FC = () => {
           const BenefitIcon = step.benefitIcon;
           return (
             <article key={step.stepNum} className="protocol-card">
-              {/* Left and Right Ticket-Style Semicircle Cutout Notches */}
+
               <div className="protocol-card-notch-left" aria-hidden="true" />
               <div className="protocol-card-notch-right" aria-hidden="true" />
 
-              {/* Notched Top Header with Negative-Radius Concave Fillets */}
               <div className="protocol-notched-header">
                 <div className="protocol-phase-indicator">
                   <span className="protocol-step-prefix">STEP</span>
@@ -78,7 +77,6 @@ const PillarsSection: FC = () => {
                 <span className="protocol-badge">{step.badge}</span>
               </div>
 
-              {/* Card Body */}
               <div className="protocol-card-body">
                 <div className="protocol-icon-orb">
                   <Icon size={24} strokeWidth={2.2} />
@@ -87,10 +85,8 @@ const PillarsSection: FC = () => {
                 <h3 className="protocol-card-title">{step.title}</h3>
                 <p className="protocol-card-desc">{step.description}</p>
 
-                {/* Decorative Perforation Line between notches */}
                 <div className="protocol-perforation" aria-hidden="true" />
 
-                {/* User-Centric Value Guarantee Tag (Free of any code or technical jargon) */}
                 <div className="protocol-benefit-tag">
                   <BenefitIcon size={15} className="protocol-benefit-icon" />
                   <span>{step.userBenefit}</span>

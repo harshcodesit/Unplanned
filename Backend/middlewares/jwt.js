@@ -1,4 +1,4 @@
-// middleware/verifyToken.js
+
 const jwt = require("jsonwebtoken");
 
 const verifyToken = (req, res, next) => {
@@ -35,7 +35,7 @@ const optionalVerifyToken = (req, res, next) => {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
       req.user = decoded;
     } catch (err) {
-      // Continue as guest if token is invalid or expired
+
     }
   }
   next();

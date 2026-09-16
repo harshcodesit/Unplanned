@@ -1,4 +1,4 @@
-// src/types/trail.ts
+
 
 export interface TrailParticipant {
   _id: string;
@@ -14,7 +14,7 @@ export interface HostedSpark {
   locationName?: string;
   geometry?: {
     type: string;
-    coordinates: [number, number]; // [lng, lat]
+    coordinates: [number, number];
   };
   startDate: string;
   endDate?: string;
@@ -30,7 +30,7 @@ export interface JoinedFootprint {
   locationName?: string;
   geometry?: {
     type: string;
-    coordinates: [number, number]; // [lng, lat]
+    coordinates: [number, number];
   };
   startDate: string;
   endDate?: string;

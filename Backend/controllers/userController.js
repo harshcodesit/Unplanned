@@ -4,6 +4,20 @@ const Request = require("../models/request.js");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
+
+const getAuthCookieOptions = () => ({
+  maxAge: 24 * 60 * 60 * 1000,
+  httpOnly: true,
+  sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+  secure: process.env.NODE_ENV === "production",
+});
+
+const getClearCookieOptions = () => ({
+  httpOnly: true,
+  sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+  secure: process.env.NODE_ENV === "production",
+});
+
 const registerUser = async (req, res) => {
   const { name, username, email, password } = req.body || {};
   let errors = [];
@@ -66,12 +80,7 @@ const registerUser = async (req, res) => {
     );
     return res
       .status(201)
-      .cookie("token", token, {
-        maxAge: 24 * 60 * 60 * 1000, // 1 day
-        httpOnly: true,
-        sameSite: "strict",
-        secure: process.env.NODE_ENV === "production",
-      })
+      .cookie("token", token, getAuthCookieOptions())
       .json({
         message: "User registered successfully!",
         user: {
@@ -105,7 +114,7 @@ const registerUser = async (req, res) => {
 
 
 const loginUser = async (req, res) => {
-  // Destructure email as well, since users can log in with either
+
   console.log("Login request body:", req.body);
   const { email, username, password } = req.body || {};
   let errors = [];
@@ -143,12 +152,7 @@ const loginUser = async (req, res) => {
 
     return res
       .status(200)
-      .cookie("token", token, {
-        maxAge: 24 * 60 * 60 * 1000, // 1 day
-        httpOnly: true,
-        sameSite: "strict",
-        secure: process.env.NODE_ENV === 'production', // Recommended addition for production
-      })
+      .cookie("token", token, getAuthCookieOptions())
       .json({
         message: "Logged in successfully!",
         user: {
@@ -170,10 +174,7 @@ const loginUser = async (req, res) => {
 
 
 const logoutUser = (req, res) => {
-  res.clearCookie("token", {
-    httpOnly: true,
-    sameSite: "strict",
-  });
+  res.clearCookie("token", getClearCookieOptions());
   return res.status(200).json({ message: "Logged out successfully!" });
 };
 
@@ -345,27 +346,23 @@ const deleteUserAccount = async (req, res) => {
       return res.status(404).json({ errors: [{ msg: "User account not found." }] });
     }
 
-    // 1. Delete all vibes created by this user
+
     await Vibe.deleteMany({ creator: userId });
 
-    // 2. Delete all requests made by this user
+
     await Request.deleteMany({ requester: userId });
 
-    // 3. Remove user from participants of any vibes
+
     await Vibe.updateMany(
       { participants: userId },
       { $pull: { participants: userId } }
     );
 
-    // 4. Delete the user document
+
     await User.findByIdAndDelete(userId);
 
-    // 5. Clear auth token cookie
-    res.clearCookie("token", {
-      httpOnly: true,
-      sameSite: "strict",
-      secure: process.env.NODE_ENV === "production",
-    });
+
+    res.clearCookie("token", getClearCookieOptions());
 
     return res.status(200).json({
       success: true,

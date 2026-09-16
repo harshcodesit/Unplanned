@@ -15,24 +15,24 @@ cloudinary.config({
 const avatarStorage = new CloudinaryStorage({
     cloudinary: cloudinary,
     params: {
-        folder: 'unplanned/avatars', // Folder name in Cloudinary
+        folder: 'unplanned/avatars',
         allowed_formats: ['jpeg', 'png', 'jpg', 'gif', 'webp'],
-        transformation: [{ width: 200, height: 200, crop: 'fill', gravity: 'face' }] // Auto-crop/resize avatars
+        transformation: [{ width: 200, height: 200, crop: 'fill', gravity: 'face' }]
     }
 });
 
-// Define Cloudinary storage for vibe images
+
 const vibeStorage = new CloudinaryStorage({
     cloudinary: cloudinary,
     params: {
-        folder: 'unplanned/vibes', // Folder name in Cloudinary
+        folder: 'unplanned/vibes',
         allowed_formats: ['jpeg', 'png', 'jpg', 'gif', 'webp'],  
     }
 });
 
 
 const imageFilter = (req, file, cb) => {
-    // Accept images only (jpg, jpeg, png, gif, webp)
+
     if (!file.originalname.match(/\.(jpg|jpeg|png|gif|webp)$/i)) {
         req.fileValidationError = 'Only image files (jpg, jpeg, png, gif, webp) are allowed!';
         return cb(new Error(req.fileValidationError), false);
@@ -42,15 +42,15 @@ const imageFilter = (req, file, cb) => {
 
 
 const uploadAvatar = multer({
-    storage: avatarStorage, // Use Cloudinary storage for avatars
+    storage: avatarStorage,
     fileFilter: imageFilter,
-    limits: { fileSize: 5 * 1024 * 1024 } // 5 MB file size limit for avatars
-}).single('avatar'); // Expects a single file input named 'avatar' from the form
+    limits: { fileSize: 5 * 1024 * 1024 }
+}).single('avatar');
 
 const uploadvibeImages = multer({
-    storage: vibeStorage, // Use Cloudinary storage for vibes
+    storage: vibeStorage,
     fileFilter: imageFilter,
-    limits: { fileSize: 10 * 1024 * 1024 } // 10 MB limit per single vibe image
-}).array('image', 5); // Expects an array of files named 'image' (singular field name), allows max 5 files.
+    limits: { fileSize: 10 * 1024 * 1024 }
+}).array('image', 5);
 
 module.exports = { uploadAvatar, uploadvibeImages };
