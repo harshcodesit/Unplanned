@@ -4,7 +4,7 @@ import { AuthProvider } from "./context/AuthContext";
 import { ToastProvider } from "./context/ToastContext";
 import Layout from "./components/Layout";
 import ProtectedRoute from "./components/ProtectedRoute";
-import ErrorBoundary from "./components/ErrorBoundary";
+
 import RouteLoadingFallback from "./components/RouteLoadingFallback";
 
 const Home = lazy(() => import("./pages/Home"));
@@ -21,27 +21,27 @@ const App = () => {
     <ToastProvider>
       <AuthProvider>
         <Router>
-          <ErrorBoundary>
-            <Suspense fallback={<RouteLoadingFallback />}>
-              <Routes>
-                <Route element={<Layout />}>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/vibes" element={<VibesFeed />} />
-                  <Route path="/vibes/:id" element={<VibeDetails />} />
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/register" element={<Register />} />
 
-                  <Route element={<ProtectedRoute />}>
-                    <Route path="/trail" element={<Trail />} />
-                    <Route path="/vibes/create" element={<VibeCreate />} />
-                    <Route path="/profile" element={<Profile />} />
-                  </Route>
+          <Suspense fallback={<RouteLoadingFallback />}>
+            <Routes>
+              <Route element={<Layout />}>
+                <Route path="/" element={<Home />} />
+                <Route path="/vibes" element={<VibesFeed />} />
+                <Route path="/vibes/:id" element={<VibeDetails />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
 
-                  <Route path="*" element={<Navigate to="/" replace />} />
+                <Route element={<ProtectedRoute />}>
+                  <Route path="/trail" element={<Trail />} />
+                  <Route path="/vibes/create" element={<VibeCreate />} />
+                  <Route path="/profile" element={<Profile />} />
                 </Route>
-              </Routes>
-            </Suspense>
-          </ErrorBoundary>
+
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </Route>
+            </Routes>
+          </Suspense>
+
         </Router>
       </AuthProvider>
     </ToastProvider>
