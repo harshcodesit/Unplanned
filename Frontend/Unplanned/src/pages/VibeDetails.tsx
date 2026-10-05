@@ -74,7 +74,10 @@ export default function VibeDetails() {
   const location = useLocation();
 
   const [vibe, setVibe] = useState<Vibe | null>(null);
-  const [displayLocation, setDisplayLocation] = useState<{ latitude: number; longitude: number } | null>(null);
+  const [displayLocation, setDisplayLocation] = useState<{
+    latitude: number;
+    longitude: number;
+  } | null>(null);
   const [showActualLocation, setShowActualLocation] = useState<boolean>(false);
   const [activePhotoIdx, setActivePhotoIdx] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -114,7 +117,9 @@ export default function VibeDetails() {
     } catch (err: unknown) {
       console.error("Error fetching vibe details:", err);
       if (axios.isAxiosError<ApiErrorResponse>(err)) {
-        const msg = err.response?.data?.errors?.[0]?.msg || "Could not locate this microadventure on the radar.";
+        const msg =
+          err.response?.data?.errors?.[0]?.msg ||
+          "Could not locate this microadventure on the radar.";
         setErrorMsg(msg);
       } else {
         setErrorMsg("Could not locate this microadventure on the radar.");
@@ -151,7 +156,10 @@ export default function VibeDetails() {
 
   const handleRequestJoin = async () => {
     if (!user) {
-      toast.warning("Please sign in or create an account to join microadventures.", "Sign In Required");
+      toast.warning(
+        "Please sign in or create an account to join microadventures.",
+        "Sign In Required",
+      );
       navigate("/login", { state: { from: location } });
       return;
     }
@@ -165,7 +173,7 @@ export default function VibeDetails() {
         setHasRequested(true);
         toast.success(
           "Join request sent to the host! Exact coordinates will unlock once accepted.",
-          "Request Sent"
+          "Request Sent",
         );
       }
     } catch (err: unknown) {
@@ -175,13 +183,19 @@ export default function VibeDetails() {
 
         if (errors && errors.length > 0) {
           toast.warning(errors[0].msg, "Request Notice");
-          if (errors[0].status === "pending" || errors[0].msg.includes("already")) {
+          if (
+            errors[0].status === "pending" ||
+            errors[0].msg.includes("already")
+          ) {
             setHasRequested(true);
           }
         } else if (single) {
           toast.warning(single, "Request Notice");
         } else {
-          toast.error("Failed to send join request. Please try again.", "Error");
+          toast.error(
+            "Failed to send join request. Please try again.",
+            "Error",
+          );
         }
       } else {
         toast.error("Failed to send join request. Please try again.", "Error");
@@ -204,9 +218,14 @@ export default function VibeDetails() {
       }>(`/vibes/${id}/request/${requestId}/accept`);
 
       if (res.data.success) {
-        toast.success("Wanderer approved! They now have clearance and coordinates.", "Request Approved");
+        toast.success(
+          "Wanderer approved! They now have clearance and coordinates.",
+          "Request Approved",
+        );
         setRequests((prev) =>
-          prev.map((r) => (r._id === requestId ? { ...r, status: "accepted" as const } : r))
+          prev.map((r) =>
+            r._id === requestId ? { ...r, status: "accepted" as const } : r,
+          ),
         );
         if (res.data.vibe) {
           setVibe(res.data.vibe);
@@ -232,7 +251,9 @@ export default function VibeDetails() {
       if (res.data.success) {
         toast.info("Request declined.", "Request Updated");
         setRequests((prev) =>
-          prev.map((r) => (r._id === requestId ? { ...r, status: "rejected" as const } : r))
+          prev.map((r) =>
+            r._id === requestId ? { ...r, status: "rejected" as const } : r,
+          ),
         );
       }
     } catch (err) {
@@ -243,17 +264,28 @@ export default function VibeDetails() {
 
   const handleCloseVibe = async () => {
     if (!id) return;
-    if (!window.confirm("Are you sure you want to close this microadventure? New join requests will no longer be accepted.")) {
+    if (
+      !window.confirm(
+        "Are you sure you want to close this microadventure? New join requests will no longer be accepted.",
+      )
+    ) {
       return;
     }
 
     setIsClosingVibe(true);
     try {
-      const res = await API.put<{ success: boolean; message: string; vibe: Vibe }>(`/vibes/${id}`, {
+      const res = await API.put<{
+        success: boolean;
+        message: string;
+        vibe: Vibe;
+      }>(`/vibes/${id}`, {
         status: "Closed",
       });
       if (res.data.success) {
-        toast.success("Microadventure closed. No new join requests will be accepted.", "Vibe Closed");
+        toast.success(
+          "Microadventure closed. No new join requests will be accepted.",
+          "Vibe Closed",
+        );
         setVibe((prev) => (prev ? { ...prev, status: "Closed" } : null));
       }
     } catch (err) {
@@ -266,13 +298,20 @@ export default function VibeDetails() {
 
   const handleDeleteVibe = async () => {
     if (!id) return;
-    if (!window.confirm("Are you sure you want to permanently cancel and remove this microadventure?")) {
+    if (
+      !window.confirm(
+        "Are you sure you want to permanently cancel and remove this microadventure?",
+      )
+    ) {
       return;
     }
 
     try {
       await API.delete(`/vibes/${id}`);
-      toast.success("Microadventure removed from the live radar.", "Vibe Removed");
+      toast.success(
+        "Microadventure removed from the live radar.",
+        "Vibe Removed",
+      );
       navigate("/vibes", { replace: true });
     } catch (err) {
       console.error("Error deleting vibe:", err);
@@ -316,7 +355,10 @@ export default function VibeDetails() {
       <div className="vibe-details-container">
         <div className="details-skeleton-container">
           <div className="details-skeleton-box skeleton-shimmer" />
-          <div className="details-skeleton-box skeleton-shimmer" style={{ minHeight: "420px" }} />
+          <div
+            className="details-skeleton-box skeleton-shimmer"
+            style={{ minHeight: "420px" }}
+          />
         </div>
       </div>
     );
@@ -326,12 +368,16 @@ export default function VibeDetails() {
     return (
       <div className="vibe-details-container">
         <div className="details-not-found">
-          <AlertCircle size={44} style={{ color: "var(--color-pine)", marginBottom: "1rem" }} />
+          <AlertCircle
+            size={44}
+            style={{ color: "var(--color-pine)", marginBottom: "1rem" }}
+          />
           <h2 className="details-title" style={{ fontSize: "1.75rem" }}>
             Spark Not Found
           </h2>
           <p style={{ color: "#4B5563", marginBottom: "2rem" }}>
-            {errorMsg || "This microadventure may have concluded, been cancelled, or the radar link is invalid."}
+            {errorMsg ||
+              "This microadventure may have concluded, been cancelled, or the radar link is invalid."}
           </p>
           <Link to="/vibes" className="details-back-link">
             <ArrowLeft size={16} />
@@ -343,21 +389,32 @@ export default function VibeDetails() {
   }
 
   const isHost = Boolean(
-    user && vibe && vibe.creator && vibe.creator._id?.toString() === user._id?.toString()
+    user &&
+    vibe &&
+    vibe.creator &&
+    vibe.creator._id?.toString() === user._id?.toString(),
   );
   const isParticipant = Boolean(
     user &&
-      vibe &&
-      (vibe.participants?.some(
-        (p) => (p._id ? p._id.toString() : String(p)) === user._id?.toString()
-      ) || userRequest?.status === "accepted")
+    vibe &&
+    (vibe.participants?.some(
+      (p) => (p._id ? p._id.toString() : String(p)) === user._id?.toString(),
+    ) ||
+      userRequest?.status === "accepted"),
   );
-  const hasExactLocationAccess = Boolean(showActualLocation || isHost || isParticipant);
+  const hasExactLocationAccess = Boolean(
+    showActualLocation || isHost || isParticipant,
+  );
   const pendingRequests = requests.filter((r) => r.status === "pending");
   const hasPhotos = vibe.image && vibe.image.length > 0;
 
-  const isTimeExpired = Boolean(vibe.endDate && new Date(vibe.endDate).getTime() < Date.now());
-  const effectiveStatus = isTimeExpired || vibe.status?.toLowerCase() === "closed" ? "Closed" : vibe.status || "Open";
+  const isTimeExpired = Boolean(
+    vibe.endDate && new Date(vibe.endDate).getTime() < Date.now(),
+  );
+  const effectiveStatus =
+    isTimeExpired || vibe.status?.toLowerCase() === "closed"
+      ? "Closed"
+      : vibe.status || "Open";
   const isVibeClosed = effectiveStatus === "Closed";
 
   const exactCoordinates = {
@@ -367,7 +424,7 @@ export default function VibeDetails() {
 
   const mapCenter = hasExactLocationAccess
     ? exactCoordinates
-    : (displayLocation || exactCoordinates);
+    : displayLocation || exactCoordinates;
 
   return (
     <div className="vibe-details-container">
@@ -387,7 +444,11 @@ export default function VibeDetails() {
             <Share2 size={15} />
             <span>Share</span>
           </button>
-          <span className={`details-step-badge ${isVibeClosed ? "closed" : ""}`}>{effectiveStatus}</span>
+          <span
+            className={`details-step-badge ${isVibeClosed ? "closed" : ""}`}
+          >
+            {effectiveStatus}
+          </span>
         </div>
       </div>
 
@@ -401,7 +462,9 @@ export default function VibeDetails() {
               <Radio size={15} className="details-kicker-icon" />
               <span className="details-kicker-text">Field Dossier</span>
             </div>
-            <span className="details-step-badge">{hasExactLocationAccess ? "Exact Locked" : "1km Radius"}</span>
+            <span className="details-step-badge">
+              {hasExactLocationAccess ? "Exact Locked" : "1km Radius"}
+            </span>
           </div>
 
           <div className="details-body">
@@ -413,7 +476,15 @@ export default function VibeDetails() {
               <div className="details-meta-item">
                 <MapPin size={18} className="details-meta-icon" />
                 <div>
-                  <span style={{ fontSize: "0.78rem", color: "#6B7280", display: "block" }}>Location</span>
+                  <span
+                    style={{
+                      fontSize: "0.78rem",
+                      color: "#6B7280",
+                      display: "block",
+                    }}
+                  >
+                    Location
+                  </span>
                   <span className="details-meta-value">
                     {vibe.locationName ||
                       (hasExactLocationAccess
@@ -422,15 +493,27 @@ export default function VibeDetails() {
                   </span>
                 </div>
                 <span className="details-meta-badge">
-                  {hasExactLocationAccess ? "Coordinates Active" : "Protected Radius"}
+                  {hasExactLocationAccess
+                    ? "Coordinates Active"
+                    : "Protected Radius"}
                 </span>
               </div>
 
               <div className="details-meta-item">
                 <Calendar size={18} className="details-meta-icon" />
                 <div>
-                  <span style={{ fontSize: "0.78rem", color: "#6B7280", display: "block" }}>Rendezvous Time</span>
-                  <span className="details-meta-value">{formatDateTime(vibe.startDate)}</span>
+                  <span
+                    style={{
+                      fontSize: "0.78rem",
+                      color: "#6B7280",
+                      display: "block",
+                    }}
+                  >
+                    Rendezvous Time
+                  </span>
+                  <span className="details-meta-value">
+                    {formatDateTime(vibe.startDate)}
+                  </span>
                 </div>
               </div>
 
@@ -438,8 +521,18 @@ export default function VibeDetails() {
                 <div className="details-meta-item">
                   <Clock size={18} className="details-meta-icon" />
                   <div>
-                    <span style={{ fontSize: "0.78rem", color: "#6B7280", display: "block" }}>Estimated Wrap</span>
-                    <span className="details-meta-value">{formatDateTime(vibe.endDate)}</span>
+                    <span
+                      style={{
+                        fontSize: "0.78rem",
+                        color: "#6B7280",
+                        display: "block",
+                      }}
+                    >
+                      Estimated Wrap
+                    </span>
+                    <span className="details-meta-value">
+                      {formatDateTime(vibe.endDate)}
+                    </span>
                   </div>
                 </div>
               )}
@@ -464,7 +557,11 @@ export default function VibeDetails() {
                         className={`details-thumb-btn ${idx === activePhotoIdx ? "active" : ""}`}
                         onClick={() => setActivePhotoIdx(idx)}
                       >
-                        <img src={img.url} alt="" className="details-thumb-img" />
+                        <img
+                          src={img.url}
+                          alt=""
+                          className="details-thumb-img"
+                        />
                       </button>
                     ))}
                   </div>
@@ -473,7 +570,9 @@ export default function VibeDetails() {
             )}
 
             <div className="details-description-section">
-              <h2 className="details-section-title">The Plan & Wanderer Guide</h2>
+              <h2 className="details-section-title">
+                The Plan & Wanderer Guide
+              </h2>
               <p className="details-description-text">{vibe.description}</p>
             </div>
 
@@ -491,8 +590,12 @@ export default function VibeDetails() {
                 />
                 <div className="details-host-name-block">
                   <span className="details-host-role">Trail Host</span>
-                  <span className="details-host-name">{vibe.creator.name || vibe.creator.username}</span>
-                  <span className="details-host-username">@{vibe.creator.username}</span>
+                  <span className="details-host-name">
+                    {vibe.creator.name || vibe.creator.username}
+                  </span>
+                  <span className="details-host-username">
+                    @{vibe.creator.username}
+                  </span>
                 </div>
               </div>
 
@@ -503,10 +606,20 @@ export default function VibeDetails() {
                     onClick={handleCloseVibe}
                     disabled={isVibeClosed || isClosingVibe}
                     className={`vibe-close-btn ${isVibeClosed ? "closed" : ""}`}
-                    title={isVibeClosed ? "This microadventure is already closed" : "Close this microadventure to new join requests"}
+                    title={
+                      isVibeClosed
+                        ? "This microadventure is already closed"
+                        : "Close this microadventure to new join requests"
+                    }
                   >
                     <Lock size={13} />
-                    <span>{isVibeClosed ? "Vibe Closed" : isClosingVibe ? "Closing..." : "Close Vibe"}</span>
+                    <span>
+                      {isVibeClosed
+                        ? "Vibe Closed"
+                        : isClosingVibe
+                          ? "Closing..."
+                          : "Close Vibe"}
+                    </span>
                   </button>
 
                   <button
@@ -523,14 +636,31 @@ export default function VibeDetails() {
             </div>
 
             <div className="details-attendees-section">
-              <h2 className="details-section-title" style={{ fontSize: "1rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+              <h2
+                className="details-section-title"
+                style={{
+                  fontSize: "1rem",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                }}
+              >
                 <Users size={16} style={{ color: "var(--color-pine)" }} />
-                <span>Wanderers On This Trail ({vibe.participants.length})</span>
+                <span>
+                  Wanderers On This Trail ({vibe.participants.length})
+                </span>
               </h2>
 
               {vibe.participants.length === 0 ? (
-                <p style={{ fontSize: "0.85rem", color: "#6B7280", margin: "0.5rem 0 0 0" }}>
-                  No wanderers have been cleared for this rendezvous yet. Be the first to join!
+                <p
+                  style={{
+                    fontSize: "0.85rem",
+                    color: "#6B7280",
+                    margin: "0.5rem 0 0 0",
+                  }}
+                >
+                  No wanderers have been cleared for this rendezvous yet. Be the
+                  first to join!
                 </p>
               ) : (
                 <div className="details-attendees-list">
@@ -556,16 +686,39 @@ export default function VibeDetails() {
                 <div className="details-host-panel">
                   <div className="details-host-subpanel">
                     <div className="details-host-panel-header">
-                      <h3 style={{ fontSize: "0.95rem", fontWeight: 800, color: "var(--color-pine)", margin: 0, display: "flex", alignItems: "center", gap: "0.45rem" }}>
-                        <Clock size={16} style={{ color: "var(--color-amber)" }} />
-                        <span>Pending Join Requests ({pendingRequests.length})</span>
+                      <h3
+                        style={{
+                          fontSize: "0.95rem",
+                          fontWeight: 800,
+                          color: "var(--color-pine)",
+                          margin: 0,
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "0.45rem",
+                        }}
+                      >
+                        <Clock
+                          size={16}
+                          style={{ color: "var(--color-amber)" }}
+                        />
+                        <span>
+                          Pending Join Requests ({pendingRequests.length})
+                        </span>
                       </h3>
                     </div>
 
                     {isLoadingRequests ? (
-                      <p style={{ fontSize: "0.82rem", color: "#6B7280" }}>Loading incoming requests...</p>
+                      <p style={{ fontSize: "0.82rem", color: "#6B7280" }}>
+                        Loading incoming requests...
+                      </p>
                     ) : pendingRequests.length === 0 ? (
-                      <p style={{ fontSize: "0.84rem", color: "#6B7280", margin: "0.35rem 0 0 0" }}>
+                      <p
+                        style={{
+                          fontSize: "0.84rem",
+                          color: "#6B7280",
+                          margin: "0.35rem 0 0 0",
+                        }}
+                      >
                         No pending join requests at this time.
                       </p>
                     ) : (
@@ -581,11 +734,23 @@ export default function VibeDetails() {
                               }}
                             />
                             <div>
-                              <span style={{ fontSize: "0.88rem", fontWeight: 700, display: "block" }}>
-                                {req.requester.name || `@${req.requester.username}`}
+                              <span
+                                style={{
+                                  fontSize: "0.88rem",
+                                  fontWeight: 700,
+                                  display: "block",
+                                }}
+                              >
+                                {req.requester.name ||
+                                  `@${req.requester.username}`}
                               </span>
-                              <span style={{ fontSize: "0.72rem", color: "#6B7280" }}>
-                                @{req.requester.username} • {new Date(req.createdAt).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}
+                              <span
+                                style={{
+                                  fontSize: "0.72rem",
+                                  color: "#6B7280",
+                                }}
+                              >
+                                @{req.requester.username}
                               </span>
                             </div>
                           </div>
@@ -611,22 +776,50 @@ export default function VibeDetails() {
                     )}
                   </div>
 
-                  <div className="details-host-subpanel" style={{ marginTop: "1.25rem", paddingTop: "1.25rem", borderTop: "1.5px solid rgba(0, 71, 65, 0.1)" }}>
+                  <div
+                    className="details-host-subpanel"
+                    style={{
+                      marginTop: "1.25rem",
+                      paddingTop: "1.25rem",
+                      borderTop: "1.5px solid rgba(0, 71, 65, 0.1)",
+                    }}
+                  >
                     <div className="details-host-panel-header">
-                      <h3 style={{ fontSize: "0.95rem", fontWeight: 800, color: "var(--color-pine)", margin: 0, display: "flex", alignItems: "center", gap: "0.45rem" }}>
+                      <h3
+                        style={{
+                          fontSize: "0.95rem",
+                          fontWeight: 800,
+                          color: "var(--color-pine)",
+                          margin: 0,
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "0.45rem",
+                        }}
+                      >
                         <UserCheck size={16} style={{ color: "#10B981" }} />
-                        <span>Confirmed Attendees List ({vibe.participants.length})</span>
+                        <span>
+                          Confirmed Attendees List ({vibe.participants.length})
+                        </span>
                       </h3>
                     </div>
 
                     {vibe.participants.length === 0 ? (
-                      <p style={{ fontSize: "0.84rem", color: "#6B7280", margin: "0.35rem 0 0 0" }}>
+                      <p
+                        style={{
+                          fontSize: "0.84rem",
+                          color: "#6B7280",
+                          margin: "0.35rem 0 0 0",
+                        }}
+                      >
                         No wanderers have joined this expedition yet.
                       </p>
                     ) : (
                       <div className="details-host-attendees-list">
                         {vibe.participants.map((attendee) => (
-                          <div key={attendee._id} className="details-host-attendee-item">
+                          <div
+                            key={attendee._id}
+                            className="details-host-attendee-item"
+                          >
                             <div className="details-requester-info">
                               <img
                                 src={getAvatarUrl(attendee.avatarUrl)}
@@ -637,10 +830,21 @@ export default function VibeDetails() {
                                 }}
                               />
                               <div>
-                                <span style={{ fontSize: "0.88rem", fontWeight: 700, display: "block" }}>
+                                <span
+                                  style={{
+                                    fontSize: "0.88rem",
+                                    fontWeight: 700,
+                                    display: "block",
+                                  }}
+                                >
                                   {attendee.name || `@${attendee.username}`}
                                 </span>
-                                <span style={{ fontSize: "0.74rem", color: "#6B7280" }}>
+                                <span
+                                  style={{
+                                    fontSize: "0.74rem",
+                                    color: "#6B7280",
+                                  }}
+                                >
                                   @{attendee.username}
                                 </span>
                               </div>
@@ -658,17 +862,26 @@ export default function VibeDetails() {
               ) : isParticipant ? (
                 <div className="details-attending-banner">
                   <UserCheck size={20} />
-                  <span>You're approved for this microadventure! See you at the rendezvous spot.</span>
+                  <span>
+                    You're approved for this microadventure! See you at the
+                    rendezvous spot.
+                  </span>
                 </div>
               ) : hasRequested ? (
                 <div className="details-pending-banner">
                   <Clock size={20} />
-                  <span>Join request pending! The host will review and exact coordinates will unlock.</span>
+                  <span>
+                    Join request pending! The host will review and exact
+                    coordinates will unlock.
+                  </span>
                 </div>
               ) : isVibeClosed ? (
                 <div className="details-pending-banner details-closed-banner">
                   <Lock size={20} />
-                  <span>This microadventure has concluded and is closed to new join requests.</span>
+                  <span>
+                    This microadventure has concluded and is closed to new join
+                    requests.
+                  </span>
                 </div>
               ) : (
                 <button
@@ -701,7 +914,9 @@ export default function VibeDetails() {
               <span>Location Radar</span>
             </h2>
             <span className="details-map-badge">
-              {hasExactLocationAccess ? "Exact Coordinates" : "Approx. 1km Radius"}
+              {hasExactLocationAccess
+                ? "Exact Coordinates"
+                : "Approx. 1km Radius"}
             </span>
           </div>
 
@@ -712,7 +927,8 @@ export default function VibeDetails() {
                   {isHost ? "Host Clearance" : "Approved Wanderer"}
                 </span>
                 <span className="details-map-exact-val">
-                  {mapCenter.latitude.toFixed(5)}, {mapCenter.longitude.toFixed(5)}
+                  {mapCenter.latitude.toFixed(5)},{" "}
+                  {mapCenter.longitude.toFixed(5)}
                 </span>
               </div>
               <a
@@ -732,7 +948,10 @@ export default function VibeDetails() {
               <APIProvider apiKey={GOOGLE_MAPS_API_KEY}>
                 <Map
                   key={`map-${mapCenter.latitude}-${mapCenter.longitude}-${hasExactLocationAccess}`}
-                  defaultCenter={{ lat: mapCenter.latitude, lng: mapCenter.longitude }}
+                  defaultCenter={{
+                    lat: mapCenter.latitude,
+                    lng: mapCenter.longitude,
+                  }}
                   center={{ lat: mapCenter.latitude, lng: mapCenter.longitude }}
                   defaultZoom={hasExactLocationAccess ? 16 : 13}
                   zoom={hasExactLocationAccess ? 16 : 13}
@@ -743,13 +962,19 @@ export default function VibeDetails() {
                 >
                   {hasExactLocationAccess ? (
                     <Marker
-                      position={{ lat: mapCenter.latitude, lng: mapCenter.longitude }}
+                      position={{
+                        lat: mapCenter.latitude,
+                        lng: mapCenter.longitude,
+                      }}
                       title={vibe.locationName || vibe.title}
                     />
                   ) : (
                     <>
                       <Circle
-                        center={{ lat: mapCenter.latitude, lng: mapCenter.longitude }}
+                        center={{
+                          lat: mapCenter.latitude,
+                          lng: mapCenter.longitude,
+                        }}
                         radius={1000}
                         options={{
                           strokeColor: "#E5A93C",
@@ -760,7 +985,10 @@ export default function VibeDetails() {
                         }}
                       />
                       <Marker
-                        position={{ lat: mapCenter.latitude, lng: mapCenter.longitude }}
+                        position={{
+                          lat: mapCenter.latitude,
+                          lng: mapCenter.longitude,
+                        }}
                         title="Approximate Neighborhood Zone"
                       />
                     </>
@@ -768,7 +996,15 @@ export default function VibeDetails() {
                 </Map>
               </APIProvider>
             ) : (
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%", color: "#9CA3AF" }}>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  height: "100%",
+                  color: "#9CA3AF",
+                }}
+              >
                 <span>Map visualizer requires Google Maps API key</span>
               </div>
             )}
@@ -777,8 +1013,16 @@ export default function VibeDetails() {
           <div className="details-map-privacy">
             <ShieldCheck size={20} className="details-map-privacy-icon" />
             <div>
-              <strong style={{ color: "#FFFFFF", display: "block", marginBottom: "2px" }}>
-                {hasExactLocationAccess ? "Precise Rendezvous Active" : "Wanderer Privacy Radius"}
+              <strong
+                style={{
+                  color: "#FFFFFF",
+                  display: "block",
+                  marginBottom: "2px",
+                }}
+              >
+                {hasExactLocationAccess
+                  ? "Precise Rendezvous Active"
+                  : "Wanderer Privacy Radius"}
               </strong>
               {hasExactLocationAccess
                 ? isHost
